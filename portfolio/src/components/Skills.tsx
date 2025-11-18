@@ -8,7 +8,7 @@ export function Skills() {
       icon: Palette,
       color: 'from-cyan-400 to-blue-600',
       skills: [
-        { name: 'Vue.js', level: 90 },
+        { name: 'Vue.js', level: 98 },
         { name: 'ReactJS', level: 95 },
         { name: 'Next.js', level: 88 },
         { name: 'TailwindCSS', level: 92 },
@@ -21,8 +21,8 @@ export function Skills() {
       color: 'from-purple-400 to-pink-600',
       skills: [
         { name: 'Python (Flask)', level: 85 },
-        { name: 'PHP (Laravel)', level: 88 },
-        { name: 'NestJS', level: 82 },
+        { name: 'PHP (Laravel)', level: 90 },
+        { name: 'NestJS', level: 89 },
       ]
     },
     {
@@ -30,7 +30,7 @@ export function Skills() {
       icon: Smartphone,
       color: 'from-green-400 to-emerald-600',
       skills: [
-        { name: 'React Native', level: 87 },
+        { name: 'React Native', level: 93 },
       ]
     },
     {
@@ -38,14 +38,13 @@ export function Skills() {
       icon: Zap,
       color: 'from-orange-400 to-red-600',
       skills: [
-        { name: 'Rust', level: 75 },
+        { name: 'Rust', level: 60 },
       ]
     },
   ];
 
   return (
     <section id="skills" className="min-h-screen py-20 relative overflow-hidden">
-      {/* Background Effects */}
       <div className="absolute inset-0 grid-bg opacity-10"></div>
       <motion.div
         animate={{
@@ -61,7 +60,6 @@ export function Skills() {
       />
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -75,7 +73,6 @@ export function Skills() {
           </p>
         </motion.div>
 
-        {/* Skills Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
           {skillsData.map((category, categoryIndex) => (
             <motion.div
@@ -86,7 +83,6 @@ export function Skills() {
               transition={{ delay: categoryIndex * 0.1 }}
               className="glass rounded-2xl p-8 holographic hover:scale-105 transition-transform duration-500"
             >
-              {/* Category Header */}
               <div className="flex items-center space-x-4 mb-8">
                 <div className={`p-4 rounded-xl bg-gradient-to-br ${category.color} glow-blue`}>
                   <category.icon className="w-8 h-8 text-white" />
@@ -94,7 +90,6 @@ export function Skills() {
                 <h3 className="text-2xl text-cyan-400">{category.category}</h3>
               </div>
 
-              {/* Skills Progress Bars */}
               <div className="space-y-6">
                 {category.skills.map((skill, skillIndex) => (
                   <div key={skill.name}>
@@ -134,7 +129,6 @@ export function Skills() {
           ))}
         </div>
 
-        {/* 3D Circular Skill Rings */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +154,6 @@ export function Skills() {
                 className="flex flex-col items-center"
               >
                 <div className="relative w-28 h-28 mb-4">
-                  {/* Background Circle */}
                   <svg className="w-full h-full transform -rotate-90">
                     <circle
                       cx="56"
