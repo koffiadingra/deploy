@@ -45,7 +45,7 @@ export const profile = {
   } satisfies Localized,
 
   location: {
-    fr: 'Grand-Bassam, Côte d\u2019Ivoire',
+    fr: 'Grand-Bassam, Côte d’Ivoire',
     en: 'Grand-Bassam, Ivory Coast',
   } satisfies Localized,
 
@@ -69,7 +69,7 @@ export const profile = {
 
 /** Rubrique « Atouts » / « Assets ». Libellés repris des deux CV. */
 export const softSkills: Localized<string>[] = [
-  { fr: 'Travail d\u2019équipe', en: 'Teamwork' },
+  { fr: 'Travail d’équipe', en: 'Teamwork' },
   { fr: 'Communication claire', en: 'Clear communication' },
   { fr: 'Assertivité', en: 'Assertiveness' },
 ];

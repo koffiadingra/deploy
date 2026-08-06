@@ -25,20 +25,20 @@ export const experiences: Experience[] = [
     },
     company: 'Xsel Services',
     place: {
-      fr: 'Palmeraie, Cocody, Côte d\u2019Ivoire',
+      fr: 'Palmeraie, Cocody, Côte d’Ivoire',
       en: 'Palmeraie, Cocody, Ivory Coast',
     },
     period: {
-      fr: 'Février 2026 \u2014 Août 2026',
-      en: 'February 2026 \u2014 August 2026',
+      fr: 'Février 2026 — Août 2026',
+      en: 'February 2026 — August 2026',
     },
     current: true,
     tasks: {
       fr: [
-        'Développement d\u2019applications web en Laravel, Next.js, React et TypeScript',
-        'Conception et développement d\u2019API REST',
-        'Développement d\u2019interfaces utilisateur responsives et ergonomiques',
-        'Intégration et consommation d\u2019API cote frontend',
+        'Développement d’applications web en Laravel, Next.js, React et TypeScript',
+        'Conception et développement d’API REST',
+        'Développement d’interfaces utilisateur responsives et ergonomiques',
+        'Intégration et consommation d’API cote frontend',
         'Conception et gestion de bases de données (MySQL / PostgreSQL)',
         'Correction de bugs, tests et optimisation des performances',
         'Gestion du code source et travail collaboratif avec Git, GitHub, GitLab et JIRA',
@@ -91,12 +91,12 @@ export const education: Education[] = [
     id: 'wecode-2025',
     title: { fr: 'Formation WeCode', en: 'weCode training' },
     school: {
-      fr: 'Epitech, Côte d\u2019Ivoire',
+      fr: 'Epitech, Côte d’Ivoire',
       en: 'epitech, Ivory Coast',
     },
     period: {
-      fr: 'Juin 2025 \u2014 Décembre 2025',
-      en: 'June 2025 \u2014 December 2025',
+      fr: 'Juin 2025 — Décembre 2025',
+      en: 'June 2025 — December 2025',
     },
     detail: {
       fr: 'Formation initiée par la GIZ dans le cadre du projet « FOR PRODE », qui vise à former des jeunes aux métiers du numérique.',
@@ -106,11 +106,11 @@ export const education: Education[] = [
   {
     id: 'licence-2025',
     title: {
-      fr: 'Licence en développement d\u2019applications et services',
+      fr: 'Licence en développement d’applications et services',
       en: "Bachelor's degree in Application and Service Development",
     },
     school: {
-      fr: 'Université Virtuelle, Côte d\u2019Ivoire',
+      fr: 'Université Virtuelle, Côte d’Ivoire',
       en: 'Virtual university, Ivory Coast',
     },
     period: { fr: '2025', en: '2025' },

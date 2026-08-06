@@ -8,7 +8,7 @@ React 18 + TypeScript + Vite 6 + Tailwind CSS v4.
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm run build      # vérifie les types puis compile dans build/
+npm run build      # vérifie les types puis compile dans dist/
 npm run typecheck  # types uniquement
 npm run preview    # sert le contenu de build/
 ```
@@ -249,10 +249,27 @@ Les ~50 dépendances Radix UI et `motion` ont été retirées : le dossier
 
 ## 9. Déploiement
 
-Le projet est déjà sur Vercel. Réglages :
+Le projet est déjà sur Vercel. `vercel.json` est versionné à la racine du
+projet, donc **aucun réglage à faire dans l'interface** :
 
-- **Build command** : `npm run build`
-- **Output directory** : `build`
+```json
+{ "framework": "vite", "buildCommand": "npm run build", "outputDirectory": "dist" }
+```
+
+Vercel attend `dist` par défaut pour un projet Vite. L'export Figma Make
+produisait `build`, d'où l'erreur *« No Output Directory named "dist" found »* :
+le build réussissait, mais Vercel cherchait le résultat au mauvais endroit.
+`vite.config.ts` produit désormais dans `dist`.
+
+> Si l'interface Vercel contient encore un *Output Directory* saisi à la main,
+> videz le champ : un réglage d'interface l'emporte sur `vercel.json`.
+
+Le dossier de sortie est ignoré par Git (`.gitignore`) : `build` y a été ajouté,
+`dist` y était déjà. L'ancien `build/` était versionné par erreur, pensez à le
+retirer du dépôt :
+```bash
+git rm -r --cached portfolio/build && git commit -m "chore: ne plus versionner la sortie de build"
+```
 
 Le CV (`public/CV-….pdf`) et le portrait (`public/portrait.png`) sont servis
 statiquement.

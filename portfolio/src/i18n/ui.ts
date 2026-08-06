@@ -39,16 +39,16 @@ const fr = {
   'about.eyebrow': 'Profil',
   'about.title': 'Qui je suis',
   'about.body1':
-    'Développeur full-stack déterminé, sérieux et autonome, je m\\u2019investis pleinement dans chaque projet. Conscient des défis techniques du métier, je fais preuve de rigueur, d\\u2019adaptation et d\\u2019un sens aigu des responsabilités. Passionné par la création de solutions fiables, je maîtrise aussi bien le backend que le frontend.',
+    'Développeur full-stack déterminé, sérieux et autonome, je m’investis pleinement dans chaque projet. Conscient des défis techniques du métier, je fais preuve de rigueur, d’adaptation et d’un sens aigu des responsabilités. Passionné par la création de solutions fiables, je maîtrise aussi bien le backend que le frontend.',
   'about.body2':
     'Au quotidien : Laravel côté serveur, Next.js / React / TypeScript côté client, bases PostgreSQL ou MySQL, API normalisées, tests, revues de code, pipelines GitLab CI et environnements reproductibles avec Docker.',
   'about.langTitle': 'Langues',
   'about.softTitle': 'Savoir-être',
-  'about.interestsTitle': 'Centres d\u2019intérêt',
+  'about.interestsTitle': 'Centres d’intérêt',
 
   'exp.eyebrow': 'Parcours',
   'exp.title': 'Expérience professionnelle',
-  'exp.present': 'aujourd\u2019hui',
+  'exp.present': 'aujourd’hui',
   'exp.stackLabel': 'Outils',
 
   'skills.eyebrow': 'Outillage',
@@ -88,8 +88,8 @@ const fr = {
   'contact.send': 'Ouvrir dans ma messagerie',
   'contact.formNote':
     'Ce formulaire ne stocke rien : il prépare le message et ouvre votre application de messagerie.',
-  'contact.opened': 'Messagerie ouverte. Si rien ne s\u2019affiche, écrivez directement à l\u2019adresse ci-dessous.',
-  'contact.copy': 'Copier l\u2019adresse',
+  'contact.opened': 'Messagerie ouverte. Si rien ne s’affiche, écrivez directement à l’adresse ci-dessous.',
+  'contact.copy': 'Copier l’adresse',
   'contact.copied': 'Adresse copiee',
   'contact.infoTitle': 'Coordonnées',
   'contact.linksTitle': 'Liens',

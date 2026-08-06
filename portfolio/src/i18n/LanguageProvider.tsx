@@ -89,7 +89,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export function useI18n(): I18nValue {
   const ctx = useContext(I18nContext);
   if (!ctx) {
-    throw new Error('useI18n doit etre utilise a l\u2019interieur de <LanguageProvider>');
+    throw new Error('useI18n doit etre utilise a l’interieur de <LanguageProvider>');
   }
   return ctx;
 }

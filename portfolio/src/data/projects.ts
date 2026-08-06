@@ -10,7 +10,7 @@ export interface Project {
   /** Uniquement pour les projets en vedette : le detail technique. */
   highlights?: Localized<string[]>;
   stack: string[];
-  /** Laisser vide tant que le depot public n\u2019existe pas. */
+  /** Laisser vide tant que le depot public n’existe pas. */
   repo?: string;
   demo?: string;
 }
@@ -19,10 +19,10 @@ export interface Project {
  * SOURCES :
  *  - Projets 1 et 2 (featured) : rubrique "Projets" du CV, page 1.
  *    Les puces sont reprises du CV, sans ajout technique invente.
- *  - Projets suivants : contenu de l\u2019ancien portfolio
- *    (src/components/Projects.tsx de l\u2019archive deploy-main.zip).
+ *  - Projets suivants : contenu de l’ancien portfolio
+ *    (src/components/Projects.tsx de l’archive deploy-main.zip).
  *
- * A COMPLETER : aucun lien de depot ni de demo n\u2019etait fourni.
+ * A COMPLETER : aucun lien de depot ni de demo n’etait fourni.
  * Renseigner `repo` / `demo` quand ils existent ; les boutons
  * apparaissent automatiquement une fois le champ rempli.
  */
@@ -39,12 +39,12 @@ export const projects: Project[] = [
     },
     role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
-      fr: 'Application web de gestion commerciale : émission et suivi de pro-formas, bons de livraison et factures, gestion des clients, catalogue d\u2019articles et de prestations, suivi des livraisons et exports.',
+      fr: 'Application web de gestion commerciale : émission et suivi de pro-formas, bons de livraison et factures, gestion des clients, catalogue d’articles et de prestations, suivi des livraisons et exports.',
       en: 'Commercial management web application for creating and tracking pro forma invoices, delivery notes, and invoices, managing customers, product and service catalogs, delivery tracking, and data exports.',
     },
     highlights: {
       fr: [
-        'Conception et développement de l\u2019API REST avec Laravel et PostgreSQL (authentification par tokens Sanctum, rôles et permissions Spatie)',
+        'Conception et développement de l’API REST avec Laravel et PostgreSQL (authentification par tokens Sanctum, rôles et permissions Spatie)',
         'Frontend en Next.js 16 / React 19 et TypeScript, avec tables de données filtrables (TanStack Table) et formulaires validés (React Hook Form + Zod)',
         'Génération de documents PDF (DomPDF) et exports Excel / CSV',
         'Tests unitaires (Jest) et end-to-end (Playwright)',
@@ -77,21 +77,21 @@ export const projects: Project[] = [
     id: 'geclean',
     featured: true,
     title: {
-      fr: 'Site vitrine et back-office \u2014 GECLEAN SERVICE',
-      en: 'Corporate Website & Back Office \u2014 GECLEAN SERVICE',
+      fr: 'Site vitrine et back-office — GECLEAN SERVICE',
+      en: 'Corporate Website & Back Office — GECLEAN SERVICE',
     },
     role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
-      fr: 'Site vitrine et back-office d\u2019administration pour une entreprise de nettoyage : catalogue de services, demandes de devis avec photo, galerie, témoignages, équipe et messagerie de contact.',
+      fr: 'Site vitrine et back-office d’administration pour une entreprise de nettoyage : catalogue de services, demandes de devis avec photo, galerie, témoignages, équipe et messagerie de contact.',
       en: 'Corporate website and administration back office for a cleaning services company, including a service catalog, quote request system with photo uploads, gallery, testimonials, team presentation, and contact messaging.',
     },
     highlights: {
       fr: [
         'API REST Laravel / PHP de 58 endpoints, avec réponses et erreurs entièrement normalisées en JSON',
-        'Authentification JWT (tymon/jwt-auth) et contrôle d\u2019accès par rôles (RBAC) a 3 niveaux via middleware personnalisé',
+        'Authentification JWT (tymon/jwt-auth) et contrôle d’accès par rôles (RBAC) a 3 niveaux via middleware personnalisé',
         'Frontend Next.js (App Router) / React / TypeScript, styling Tailwind CSS, client Axios avec intercepteurs (injection du token, déconnexion automatique au 401)',
         'SEO technique : Metadata API, Open Graph, sitemap.xml et robots.txt générés, données structurées Schema.org pour le référencement local',
-        'Upload et gestion d\u2019images (trait réutilisable, stockage UUID), emails transactionnels non bloquants avec dégradation contrôlée',
+        'Upload et gestion d’images (trait réutilisable, stockage UUID), emails transactionnels non bloquants avec dégradation contrôlée',
         'Tableau de bord administrateur : statistiques, graphiques Recharts, pagination, filtres et recherche cote serveur',
         'Middleware CORS dédié, CI GitLab avec détection de secrets',
       ],
@@ -126,12 +126,12 @@ export const projects: Project[] = [
     id: 'my-show-time',
     featured: false,
     title: {
-      fr: 'My Show Time \u2014 plateforme de réservation',
-      en: 'My Show Time \u2014 booking platform',
+      fr: 'My Show Time — plateforme de réservation',
+      en: 'My Show Time — booking platform',
     },
     role: { fr: 'Développeur backend', en: 'Backend developer' },
     summary: {
-      fr: 'Backend d\u2019une plateforme de réservation de concerts et festivals : gestion des utilisateurs, réservation avec QR code, favoris, filtres avancés et panneau d\u2019administration.',
+      fr: 'Backend d’une plateforme de réservation de concerts et festivals : gestion des utilisateurs, réservation avec QR code, favoris, filtres avancés et panneau d’administration.',
       en: 'Backend for a concert and festival booking platform: user management, QR-code booking, favourites, advanced filters and an admin panel.',
     },
     stack: ['NestJS', 'Node.js', 'MongoDB', 'Mongoose', 'JWT', 'WebSockets'],
@@ -140,8 +140,8 @@ export const projects: Project[] = [
     id: 'redditech',
     featured: false,
     title: {
-      fr: 'Redditech \u2014 application mobile Reddit',
-      en: 'Redditech \u2014 Reddit mobile app',
+      fr: 'Redditech — application mobile Reddit',
+      en: 'Redditech — Reddit mobile app',
     },
     role: {
       fr: 'Architecte logiciel / développeur mobile',
@@ -157,12 +157,12 @@ export const projects: Project[] = [
     id: 'freeads',
     featured: false,
     title: {
-      fr: 'FREEADS \u2014 plateforme de petites annonces',
-      en: 'FREEADS \u2014 classified ads platform',
+      fr: 'FREEADS — plateforme de petites annonces',
+      en: 'FREEADS — classified ads platform',
     },
     role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
-      fr: 'Site de publication d\u2019annonces gratuites : inscription et validation par e-mail, CRUD des annonces avec photo, prix et localisation, recherche et filtres, tableau de bord utilisateur.',
+      fr: 'Site de publication d’annonces gratuites : inscription et validation par e-mail, CRUD des annonces avec photo, prix et localisation, recherche et filtres, tableau de bord utilisateur.',
       en: 'Free classified ads site: sign-up with email validation, ad CRUD with photo, price and location, search and filters, user dashboard.',
     },
     stack: ['Laravel', 'Vue.js', 'MySQL', 'Tailwind CSS'],
@@ -185,12 +185,12 @@ export const projects: Project[] = [
     id: 'tickets',
     featured: false,
     title: {
-      fr: 'Plateforme d\u2019achat et de réservation de tickets',
+      fr: 'Plateforme d’achat et de réservation de tickets',
       en: 'Ticket purchase and booking platform',
     },
     role: { fr: 'Développeur backend', en: 'Backend developer' },
     summary: {
-      fr: 'Backend d\u2019une plateforme de concerts et événements : modules, endpoints, logique métier et API connectées à un frontend Vue.js.',
+      fr: 'Backend d’une plateforme de concerts et événements : modules, endpoints, logique métier et API connectées à un frontend Vue.js.',
       en: 'Backend for a concert and event platform: modules, endpoints, business logic and APIs connected to a Vue.js frontend.',
     },
     stack: ['NestJS', 'Vue.js', 'MongoDB', 'Tailwind CSS'],
@@ -213,12 +213,12 @@ export const projects: Project[] = [
     id: 'integration-template',
     featured: false,
     title: {
-      fr: 'Intégration d\u2019un template HTML / CSS',
+      fr: 'Intégration d’un template HTML / CSS',
       en: 'HTML / CSS template integration',
     },
     role: { fr: 'Intégrateur web', en: 'Web integrator' },
     summary: {
-      fr: 'Intégration d\u2019une maquette desktop puis mobile en HTML5 / CSS3 conforme W3C, optimisation SEO mesurée avec Lighthouse et mise en page en CSS Grid.',
+      fr: 'Intégration d’une maquette desktop puis mobile en HTML5 / CSS3 conforme W3C, optimisation SEO mesurée avec Lighthouse et mise en page en CSS Grid.',
       en: 'Integration of a desktop then mobile design in W3C-compliant HTML5 / CSS3, SEO optimisation measured with Lighthouse and CSS Grid layout.',
     },
     stack: ['HTML5', 'CSS3', 'Responsive', 'SEO'],
