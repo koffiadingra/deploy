@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Check, Copy, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Check, Copy, Flag, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useI18n } from '../i18n/LanguageProvider';
 import { profile } from '../data/profile';
 import { SectionHeader } from './Ui';
@@ -54,6 +54,7 @@ export function Contact() {
     { icon: Mail, label: t('contact.email'), value: profile.email, href: `mailto:${profile.email}` },
     { icon: Phone, label: t('contact.phone'), value: profile.phone, href: `tel:${profile.phoneHref}` },
     { icon: MapPin, label: t('contact.location'), value: pick(profile.location) },
+    { icon: Flag, label: t('contact.nationality'), value: pick(profile.nationality) },
     { icon: Send, label: t('contact.availability'), value: pick(profile.availability) },
   ];
 

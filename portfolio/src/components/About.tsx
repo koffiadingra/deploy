@@ -12,7 +12,7 @@ export function About() {
 
         <div className="grid gap-10 md:grid-cols-[280px_1fr]">
           {/* Portrait presente comme une fiche d'identification machine */}
-          <figure className="panel relative p-3">
+          <figure className="panel relative self-start p-3">
             <img
               src={profile.portrait}
               alt={profile.fullName}

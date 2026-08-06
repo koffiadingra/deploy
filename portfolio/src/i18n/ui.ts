@@ -31,7 +31,7 @@ const fr = {
   'hero.pitch':
     'Je construis des applications web de bout en bout : API REST Laravel, interfaces Next.js et TypeScript, base de données, conteneurisation Docker et intégration continue GitLab.',
   'hero.ctaProjects': 'Voir les projets',
-  'hero.ctaCv': 'Télécharger le CV',
+  'hero.ctaCv': 'Télécharger le CV (FR)',
   'hero.robotHint': 'Bougez la souris — il vous suit',
   'hero.scroll': 'Défiler',
 
@@ -39,9 +39,9 @@ const fr = {
   'about.eyebrow': 'Profil',
   'about.title': 'Qui je suis',
   'about.body1':
-    'Développeur full-stack junior base en Côte d\u2019Ivoire. Je travaille surtout avec Laravel cote serveur et Next.js / React / TypeScript cote client, sur des bases PostgreSQL ou MySQL.',
+    'Développeur full-stack déterminé, sérieux et autonome, je m\\u2019investis pleinement dans chaque projet. Conscient des défis techniques du métier, je fais preuve de rigueur, d\\u2019adaptation et d\\u2019un sens aigu des responsabilités. Passionné par la création de solutions fiables, je maîtrise aussi bien le backend que le frontend.',
   'about.body2':
-    'J\u2019attache de l\u2019importance a ce qui rend une application maintenable : API normalisées, tests, revues de code, pipelines CI et environnements reproductibles avec Docker.',
+    'Au quotidien : Laravel côté serveur, Next.js / React / TypeScript côté client, bases PostgreSQL ou MySQL, API normalisées, tests, revues de code, pipelines GitLab CI et environnements reproductibles avec Docker.',
   'about.langTitle': 'Langues',
   'about.softTitle': 'Savoir-être',
   'about.interestsTitle': 'Centres d\u2019intérêt',
@@ -76,7 +76,7 @@ const fr = {
   'contact.eyebrow': 'Contact',
   'contact.title': 'Me contacter',
   'contact.intro':
-    'Ouvert aux opportunités en alternance, CDD ou CDI, en présentiel comme en teletravail.',
+    'Ouvert aux opportunités en alternance, CDD ou CDI, en présentiel comme en télétravail.',
   'contact.name': 'Nom',
   'contact.namePlaceholder': 'Votre nom',
   'contact.email': 'Email',
@@ -88,7 +88,7 @@ const fr = {
   'contact.send': 'Ouvrir dans ma messagerie',
   'contact.formNote':
     'Ce formulaire ne stocke rien : il prépare le message et ouvre votre application de messagerie.',
-  'contact.opened': 'Messagerie ouverte. Si rien ne s\u2019affiche, écrivez directement a l\u2019adresse ci-dessous.',
+  'contact.opened': 'Messagerie ouverte. Si rien ne s\u2019affiche, écrivez directement à l\u2019adresse ci-dessous.',
   'contact.copy': 'Copier l\u2019adresse',
   'contact.copied': 'Adresse copiee',
   'contact.infoTitle': 'Coordonnées',
@@ -96,6 +96,7 @@ const fr = {
   'contact.phone': 'Téléphone',
   'contact.location': 'Localisation',
   'contact.availability': 'Disponibilité',
+  'contact.nationality': 'Nationalité',
 
   // Pied de page
   'footer.built': 'Site construit avec React, TypeScript, Vite et Tailwind CSS.',
@@ -123,16 +124,16 @@ const en: Record<UiKey, string> = {
   'hero.pitch':
     'I build web applications end to end: Laravel REST APIs, Next.js and TypeScript interfaces, databases, Docker containers and GitLab continuous integration.',
   'hero.ctaProjects': 'See projects',
-  'hero.ctaCv': 'Download CV',
+  'hero.ctaCv': 'Download CV (EN)',
   'hero.robotHint': 'Move your mouse — it follows you',
   'hero.scroll': 'Scroll',
 
   'about.eyebrow': 'Profile',
   'about.title': 'Who I am',
   'about.body1':
-    'Junior full-stack developer based in Ivory Coast. I mostly work with Laravel on the server side and Next.js / React / TypeScript on the client side, on PostgreSQL or MySQL databases.',
+    'As a determined, serious, and independent full-stack developer, I am fully committed to every project. Aware of the technical challenges of the role, I am rigorous, adaptable, and possess a strong sense of responsibility. Passionate about creating reliable solutions, I am proficient in both backend and frontend development.',
   'about.body2':
-    'I care about what makes an application maintainable: consistent APIs, tests, code reviews, CI pipelines and reproducible environments with Docker.',
+    'Day to day: Laravel on the server side, Next.js / React / TypeScript on the client side, PostgreSQL or MySQL databases, standardized APIs, tests, code reviews, GitLab CI pipelines and reproducible environments with Docker.',
   'about.langTitle': 'Languages',
   'about.softTitle': 'Soft skills',
   'about.interestsTitle': 'Interests',
@@ -187,6 +188,7 @@ const en: Record<UiKey, string> = {
   'contact.phone': 'Phone',
   'contact.location': 'Location',
   'contact.availability': 'Availability',
+  'contact.nationality': 'Nationality',
 
   'footer.built': 'Built with React, TypeScript, Vite and Tailwind CSS.',
   'footer.top': 'Back to top',

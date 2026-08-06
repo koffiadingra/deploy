@@ -21,7 +21,7 @@ export const experiences: Experience[] = [
     id: 'xsel-2026',
     role: {
       fr: 'Stage de développement full-stack',
-      en: 'Full-stack development internship',
+      en: 'Full-Stack Developer Intern',
     },
     company: 'Xsel Services',
     place: {
@@ -45,14 +45,14 @@ export const experiences: Experience[] = [
         'Participation aux revues de code, aux merge requests et a la maintenance des applications',
       ],
       en: [
-        'Building web applications with Laravel, Next.js, React and TypeScript',
-        'Designing and developing REST APIs',
-        'Building responsive, usable user interfaces',
-        'Integrating and consuming APIs on the frontend',
-        'Designing and managing databases (MySQL / PostgreSQL)',
-        'Bug fixing, testing and performance optimisation',
-        'Source control and team collaboration with Git, GitHub, GitLab and JIRA',
-        'Taking part in code reviews, merge requests and application maintenance',
+        'Developed web applications using Laravel, Next.js, React, and TypeScript',
+        'Designed and developed RESTful APIs',
+        'Built responsive and user-friendly interfaces',
+        'Integrated and consumed backend APIs on the frontend',
+        'Designed and managed MySQL and PostgreSQL databases',
+        'Participated in bug fixing, testing, and application performance optimization',
+        'Used Git, GitHub, GitLab, and Jira for version control, issue tracking, and collaborative development',
+        'Participated in code reviews, merge requests, and ongoing application maintenance',
       ],
     },
     stack: [
@@ -89,29 +89,29 @@ export interface Education {
 export const education: Education[] = [
   {
     id: 'wecode-2025',
-    title: { fr: 'Formation WeCode', en: 'WeCode training programme' },
+    title: { fr: 'Formation WeCode', en: 'weCode training' },
     school: {
       fr: 'Epitech, Côte d\u2019Ivoire',
-      en: 'Epitech, Ivory Coast',
+      en: 'epitech, Ivory Coast',
     },
     period: {
       fr: 'Juin 2025 \u2014 Décembre 2025',
       en: 'June 2025 \u2014 December 2025',
     },
     detail: {
-      fr: 'Formation initiée par la GIZ dans le cadre du projet « For Prode », qui vise a former des jeunes aux métiers du numérique.',
-      en: 'Programme launched by GIZ as part of the "For Prode" project, which trains young people for digital careers.',
+      fr: 'Formation initiée par la GIZ dans le cadre du projet « FOR PRODE », qui vise à former des jeunes aux métiers du numérique.',
+      en: 'A training program initiated by GIZ as part of the FOR PRODE project, which aims to train young people in the field of digital technology.',
     },
   },
   {
     id: 'licence-2025',
     title: {
       fr: 'Licence en développement d\u2019applications et services',
-      en: 'Bachelor in application and service development',
+      en: "Bachelor's degree in Application and Service Development",
     },
     school: {
       fr: 'Université Virtuelle, Côte d\u2019Ivoire',
-      en: 'Virtual University, Ivory Coast',
+      en: 'Virtual university, Ivory Coast',
     },
     period: { fr: '2025', en: '2025' },
   },

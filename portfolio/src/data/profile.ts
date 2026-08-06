@@ -1,17 +1,29 @@
 import type { Localized } from '../i18n/config';
 
 /**
- * Coordonnees et identite.
+ * Coordonnées et identité.
  *
- * SOURCE : CV_2026-08-05_Koffi_Jean_Emmanuel_Martial_ADINGRA.pdf
+ * SOURCES :
+ *  - CV_2026-08-05_..._ADINGRA.pdf  (version française)
+ *  - CV_2026-08-06_..._ADINGRA.pdf  (version anglaise)
  *
- * A VERIFIER (deux valeurs differentes entre le CV et l'ancien site) :
- *  - Telephone : le CV indique +225 05 86 90 36 07, l'ancien site
- *    affichait +225 07 78 90 95 37. La valeur du CV est retenue ici
- *    car c'est le document le plus recent. A confirmer.
- *  - Email : le CV ecrit "koffi.adingra@epietch.eu" (coquille probable
- *    sur "epitech"). L'ancien site utilisait "koffi.adingra@epitech.eu",
- *    valeur retenue ici. A confirmer.
+ * Les deux documents ne disent pas exactement la même chose. Chaque
+ * divergence est signalée ci-dessous plutôt que tranchée en silence.
+ *
+ * À CONFIRMER :
+ *  1. Email. Les DEUX CV écrivent « koffi.adingra@epietch.eu ».
+ *     « epietch.eu » n'est pas un domaine connu ; « epitech.eu » l'est,
+ *     et c'est ce qu'utilisait l'ancien site. La valeur retenue est
+ *     donc @epitech.eu — mais la coquille apparaît deux fois, à vérifier.
+ *  2. Téléphone. Les deux CV donnent +225 05 86 90 36 07.
+ *     L'ancien site affichait +225 07 78 90 95 37. Le CV est retenu.
+ *  3. Localisation. Le CV français indique « Mobilité », le CV anglais
+ *     indique « Wales » au même emplacement, alors que l'adresse reste
+ *     Bassam. Impossible de trancher : le site affiche Grand-Bassam,
+ *     Côte d'Ivoire, et la mobilité est mentionnée séparément.
+ *  4. Niveau d'anglais. CV français : « Niveau scolaire ».
+ *     CV anglais : « Advanced academic level ». Le CV anglais étant le
+ *     plus récent (06/08), c'est lui qui est retenu.
  */
 export const profile = {
   fullName: 'Koffi Jean Emmanuel Martial ADINGRA',
@@ -21,16 +33,31 @@ export const profile = {
   phone: '+225 05 86 90 36 07',
   phoneHref: '+2250586903607',
   portrait: '/portrait.png',
-  cvFile: '/CV-Koffi-Jean-Emmanuel-Martial-ADINGRA.pdf',
+
+  /**
+   * Le CV est servi dans la langue affichée : un recruteur anglophone
+   * télécharge la version anglaise, un recruteur francophone la version
+   * française. Le bouton du héros lit cette valeur via pick().
+   */
+  cvFile: {
+    fr: '/CV-Koffi-Jean-Emmanuel-Martial-ADINGRA-FR.pdf',
+    en: '/CV-Koffi-Jean-Emmanuel-Martial-ADINGRA-EN.pdf',
+  } satisfies Localized,
 
   location: {
     fr: 'Grand-Bassam, Côte d\u2019Ivoire',
     en: 'Grand-Bassam, Ivory Coast',
   } satisfies Localized,
 
+  /** Rubrique « Ivorian » du CV anglais. */
+  nationality: {
+    fr: 'Ivoirienne',
+    en: 'Ivorian',
+  } satisfies Localized,
+
   availability: {
-    fr: 'Télétravail ou présentiel, avec mobilite',
-    en: 'Remote or on site, willing to relocate',
+    fr: 'Télétravail ou présentiel, avec mobilité',
+    en: 'Open to remote work',
   } satisfies Localized,
 
   links: {
@@ -40,30 +67,35 @@ export const profile = {
   },
 } as const;
 
-/** Savoir-etre listes dans la rubrique "Atouts" du CV. */
+/** Rubrique « Atouts » / « Assets ». Libellés repris des deux CV. */
 export const softSkills: Localized<string>[] = [
   { fr: 'Travail d\u2019équipe', en: 'Teamwork' },
   { fr: 'Communication claire', en: 'Clear communication' },
   { fr: 'Assertivité', en: 'Assertiveness' },
 ];
 
-/** Langues parlees, rubrique "Langues" du CV. */
+/** Rubrique « Langues » / « Languages ». */
 export const spokenLanguages: { name: Localized; level: Localized }[] = [
   {
     name: { fr: 'Français', en: 'French' },
-    level: { fr: 'Niveau avancé', en: 'Advanced' },
+    level: { fr: 'Niveau avancé', en: 'Advanced level' },
   },
   {
     name: { fr: 'Anglais', en: 'English' },
-    level: { fr: 'Niveau scolaire', en: 'School level' },
+    // Niveau relevé d'après le CV anglais du 06/08 (voir note 4 plus haut).
+    level: { fr: 'Niveau académique avancé', en: 'Advanced academic level' },
   },
 ];
 
-/** Centres d'interet, rubrique du meme nom sur le CV. */
+/**
+ * Rubrique « Centres d'intérêt » / « Interests ».
+ * NOTE : le CV français cite la biologie moléculaire, le CV anglais ne
+ * la cite plus. Elle est conservée, à retirer si c'est volontaire.
+ */
 export const interests: Localized<string>[] = [
-  { fr: 'Jeu video', en: 'Gaming' },
+  { fr: 'Jeu vidéo', en: 'Gaming' },
   { fr: 'Arts martiaux (kung-fu)', en: 'Martial arts (kung fu)' },
-  { fr: 'Biologie moleculaire', en: 'Molecular biology' },
-  { fr: 'Mathematiques', en: 'Mathematics' },
+  { fr: 'Biologie moléculaire', en: 'Molecular biology' },
+  { fr: 'Mathématiques', en: 'Mathematics' },
   { fr: 'Physique quantique', en: 'Quantum physics' },
 ];

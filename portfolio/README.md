@@ -111,12 +111,23 @@ Chaque fichier indique sa **source** en commentaire (CV page 1, ou ancien
 
 ### Points à confirmer
 
+Deux CV ont servi de source : la version française (05/08) et la version
+anglaise (06/08). Elles ne disent pas exactement la même chose.
+
 | Point | Détail |
 |---|---|
-| Téléphone | CV : `+225 05 86 90 36 07` — ancien site : `+225 07 78 90 95 37`. Le CV a été retenu. |
-| Email | Le CV écrit `@epietch.eu` (coquille probable). `@epitech.eu` a été retenu. |
-| Projet GIZ | Intitulé « for prode » repris tel quel, non vérifiable. |
+| Email | Les **deux** CV écrivent `@epietch.eu`. `epietch.eu` n'est pas un domaine connu, `epitech.eu` l'est et c'est ce qu'utilisait l'ancien site. `@epitech.eu` a été retenu, mais la coquille apparaît deux fois. |
+| Téléphone | Les deux CV donnent `+225 05 86 90 36 07` — ancien site : `+225 07 78 90 95 37`. Le CV a été retenu. |
+| Localisation | CV français : « Mobilité ». CV anglais : « Wales », au même emplacement, alors que l'adresse reste Bassam. Le site affiche Grand-Bassam et mentionne la mobilité séparément. |
+| Niveau d'anglais | CV français : « Niveau scolaire ». CV anglais : « Advanced academic level ». Le CV anglais étant plus récent, c'est lui qui est affiché. |
+| Centres d'intérêt | Le CV français cite la biologie moléculaire, le CV anglais ne la cite plus. Elle est conservée. |
 | Liens de dépôt | Aucun fourni. Champs `repo` / `demo` vides. |
+
+### CV téléchargeable selon la langue
+
+`profile.cvFile` est un objet `Localized` : le bouton du héros lit
+`pick(profile.cvFile)`, donc un visiteur en anglais télécharge la version
+anglaise, un visiteur en français la version française.
 
 ### Ajouter un lien de dépôt
 

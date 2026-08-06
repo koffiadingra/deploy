@@ -56,7 +56,7 @@ export function Hero() {
               {t('hero.ctaProjects')}
             </a>
             <a
-              href={profile.cvFile}
+              href={pick(profile.cvFile)}
               download
               className="inline-flex items-center gap-2 border border-edge-hi px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-bone transition-colors duration-150 hover:border-signal hover:text-signal"
             >

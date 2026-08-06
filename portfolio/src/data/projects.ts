@@ -35,12 +35,12 @@ export const projects: Project[] = [
     featured: true,
     title: {
       fr: 'Application de gestion de facturation',
-      en: 'Invoicing management application',
+      en: 'Billing Management Application',
     },
-    role: { fr: 'Développeur full-stack', en: 'Full-stack developer' },
+    role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
       fr: 'Application web de gestion commerciale : émission et suivi de pro-formas, bons de livraison et factures, gestion des clients, catalogue d\u2019articles et de prestations, suivi des livraisons et exports.',
-      en: 'Business management web application: issuing and tracking pro-formas, delivery notes and invoices, client management, catalogue of items and services, delivery tracking and exports.',
+      en: 'Commercial management web application for creating and tracking pro forma invoices, delivery notes, and invoices, managing customers, product and service catalogs, delivery tracking, and data exports.',
     },
     highlights: {
       fr: [
@@ -51,11 +51,11 @@ export const projects: Project[] = [
         'Conteneurisation Docker multi-stage et orchestration docker-compose (PostgreSQL, Nginx, PHP-FPM)',
       ],
       en: [
-        'Designed and built the REST API with Laravel and PostgreSQL (Sanctum token authentication, Spatie roles and permissions)',
-        'Frontend in Next.js 16 / React 19 and TypeScript, with filterable data tables (TanStack Table) and validated forms (React Hook Form + Zod)',
-        'PDF document generation (DomPDF) and Excel / CSV exports',
-        'Unit tests (Jest) and end-to-end tests (Playwright)',
-        'Multi-stage Docker containerisation and docker-compose orchestration (PostgreSQL, Nginx, PHP-FPM)',
+        'Designed and developed a RESTful API using Laravel and PostgreSQL, including Laravel Sanctum token-based authentication and Spatie Roles & Permissions',
+        'Developed the frontend with Next.js 16, React 19, and TypeScript, featuring filterable data tables (TanStack Table) and validated forms (React Hook Form + Zod)',
+        'Implemented PDF document generation (DomPDF) and Excel/CSV export functionality',
+        'Wrote unit tests with Jest and end-to-end tests with Playwright',
+        'Containerized the application using Docker (multi-stage builds) and orchestrated services with Docker Compose (PostgreSQL, Nginx, PHP-FPM)',
       ],
     },
     stack: [
@@ -78,12 +78,12 @@ export const projects: Project[] = [
     featured: true,
     title: {
       fr: 'Site vitrine et back-office \u2014 GECLEAN SERVICE',
-      en: 'Marketing site and back-office \u2014 GECLEAN SERVICE',
+      en: 'Corporate Website & Back Office \u2014 GECLEAN SERVICE',
     },
-    role: { fr: 'Développeur full-stack', en: 'Full-stack developer' },
+    role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
       fr: 'Site vitrine et back-office d\u2019administration pour une entreprise de nettoyage : catalogue de services, demandes de devis avec photo, galerie, témoignages, équipe et messagerie de contact.',
-      en: 'Marketing site and admin back-office for a cleaning company: service catalogue, quote requests with photo, gallery, testimonials, team pages and contact messaging.',
+      en: 'Corporate website and administration back office for a cleaning services company, including a service catalog, quote request system with photo uploads, gallery, testimonials, team presentation, and contact messaging.',
     },
     highlights: {
       fr: [
@@ -96,13 +96,13 @@ export const projects: Project[] = [
         'Middleware CORS dédié, CI GitLab avec détection de secrets',
       ],
       en: [
-        'Laravel / PHP REST API with 58 endpoints, responses and errors fully normalised as JSON',
-        'JWT authentication (tymon/jwt-auth) and 3-level role-based access control (RBAC) through custom middleware',
-        'Next.js (App Router) / React / TypeScript frontend, Tailwind CSS styling, Axios client with interceptors (token injection, automatic logout on 401)',
-        'Technical SEO: Metadata API, Open Graph, generated sitemap.xml and robots.txt, Schema.org structured data for local search',
-        'Image upload and management (reusable trait, UUID storage), non-blocking transactional emails with controlled degradation',
-        'Admin dashboard: statistics, Recharts charts, pagination, server-side filtering and search',
-        'Dedicated CORS middleware, GitLab CI with secret detection',
+        'Designed and developed a Laravel/PHP REST API with 58 endpoints, providing fully standardized JSON responses and error handling',
+        'Implemented JWT authentication (tymon/jwt-auth) and three-level Role-Based Access Control (RBAC) using custom middleware',
+        'Built the frontend with Next.js (App Router), React, and TypeScript, styled with Tailwind CSS, and integrated an Axios client with interceptors for token injection and automatic logout on HTTP 401 responses',
+        'Implemented technical SEO, including the Metadata API, Open Graph tags, generated sitemap.xml and robots.txt, and Schema.org structured data for local search optimization',
+        'Developed reusable image upload and management features using UUID-based storage, along with non-blocking transactional email handling with graceful fallback mechanisms',
+        'Created an administration dashboard featuring statistics, Recharts visualizations, server-side pagination, filtering, and search',
+        'Configured dedicated CORS middleware and a GitLab CI pipeline with secret detection',
       ],
     },
     stack: [
@@ -160,7 +160,7 @@ export const projects: Project[] = [
       fr: 'FREEADS \u2014 plateforme de petites annonces',
       en: 'FREEADS \u2014 classified ads platform',
     },
-    role: { fr: 'Développeur full-stack', en: 'Full-stack developer' },
+    role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
       fr: 'Site de publication d\u2019annonces gratuites : inscription et validation par e-mail, CRUD des annonces avec photo, prix et localisation, recherche et filtres, tableau de bord utilisateur.',
       en: 'Free classified ads site: sign-up with email validation, ad CRUD with photo, price and location, search and filters, user dashboard.',
@@ -174,7 +174,7 @@ export const projects: Project[] = [
       fr: 'Plateforme de notation de films et séries',
       en: 'Film and series rating platform',
     },
-    role: { fr: 'Développeur full-stack', en: 'Full-stack developer' },
+    role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
       fr: 'Application de critique et de notation : fiches détaillées, système de votes et interactions entre utilisateurs.',
       en: 'Review and rating application: detailed entries, a voting system and user interactions.',
@@ -190,7 +190,7 @@ export const projects: Project[] = [
     },
     role: { fr: 'Développeur backend', en: 'Backend developer' },
     summary: {
-      fr: 'Backend d\u2019une plateforme de concerts et événements : modules, endpoints, logique métier et API connectées a un frontend Vue.js.',
+      fr: 'Backend d\u2019une plateforme de concerts et événements : modules, endpoints, logique métier et API connectées à un frontend Vue.js.',
       en: 'Backend for a concert and event platform: modules, endpoints, business logic and APIs connected to a Vue.js frontend.',
     },
     stack: ['NestJS', 'Vue.js', 'MongoDB', 'Tailwind CSS'],
@@ -202,9 +202,9 @@ export const projects: Project[] = [
       fr: 'Plateforme de centralisation de commentaires',
       en: 'Comment centralisation platform',
     },
-    role: { fr: 'Développeur full-stack', en: 'Full-stack developer' },
+    role: { fr: 'Développeur full-stack', en: 'Full-Stack Developer' },
     summary: {
-      fr: 'Gestion des utilisateurs et centralisation multi-plateforme des commentaires, avec un frontend Vue.js intégré a un backend Laravel.',
+      fr: 'Gestion des utilisateurs et centralisation multi-plateforme des commentaires, avec un frontend Vue.js intégré à un backend Laravel.',
       en: 'User management and cross-platform comment aggregation, with a Vue.js frontend on a Laravel backend.',
     },
     stack: ['Laravel', 'Vue.js', 'MySQL', 'Tailwind CSS'],
