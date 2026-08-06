@@ -1,119 +1,160 @@
+/* ============================================================
+   Portfolio — Koffi Jean Emmanuel Martial ADINGRA
+   Direction artistique : "panneau de maintenance robotique"
+   Reference Tailwind v4 : https://tailwindcss.com/docs/theme
+   ============================================================ */
+
 @import "tailwindcss";
 
-/* Custom Properties */
-:root {
-  --neon-blue: #00d4ff;
-  --neon-purple: #b144ff;
-  --neon-pink: #ff006e;
-  --glass-bg: rgba(17, 25, 40, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.125);
+/* ---- 1. Tokens de design -----------------------------------
+   En Tailwind v4, tout ce qui est declare dans @theme devient
+   automatiquement une classe utilitaire :
+     --color-signal  ->  bg-signal / text-signal / border-signal
+     --font-display  ->  font-display
+     --ease-servo    ->  ease-servo
+   Doc : https://tailwindcss.com/docs/theme#theme-variable-namespaces
+------------------------------------------------------------- */
+@theme {
+  /* Chassis : gris chauds, pas du noir pur. On empile des surfaces. */
+  --color-ink: #131110;
+  --color-panel: #1b1917;
+  --color-inset: #232120;
+  --color-edge: #34302b;
+  --color-edge-hi: #4a443d;
+
+  /* Texte : blanc casse facon metal peint */
+  --color-bone: #ede8e0;
+  --color-muted: #948c81;
+  --color-faint: #6b645c;
+
+  /* Signaletique fonctionnelle (comme sur une vraie machine) */
+  --color-signal: #ff6a13; /* orange securite : action / lien */
+  --color-signal-dim: #b34a0d;
+  --color-live: #56d6a0; /* LED etat OK */
+  --color-warn: #f5c542; /* bande de prudence */
+
+  /* Typographie */
+  --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Mouvement : course de servomoteur, jamais de rebond */
+  --ease-servo: cubic-bezier(0.2, 0, 0, 1);
+  --ease-step: steps(6, end);
 }
 
-/* Dark Theme */
-body {
-  @apply bg-gray-950 text-gray-100;
-  background-image: 
-    radial-gradient(at 27% 37%, rgba(0, 212, 255, 0.1) 0px, transparent 50%),
-    radial-gradient(at 97% 21%, rgba(177, 68, 255, 0.1) 0px, transparent 50%),
-    radial-gradient(at 52% 99%, rgba(255, 0, 110, 0.05) 0px, transparent 50%),
-    radial-gradient(at 10% 29%, rgba(0, 212, 255, 0.05) 0px, transparent 50%),
-    radial-gradient(at 97% 96%, rgba(177, 68, 255, 0.05) 0px, transparent 50%);
-  background-attachment: fixed;
+/* ---- 2. Base ---------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Accessibilite : focus clavier toujours visible */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-edge);
+    border: 2px solid var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-signal-dim);
+  }
 }
 
-/* Glass Effect */
-.glass {
-  background: var(--glass-bg);
-  backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  box-shadow: 
-    0 8px 32px 0 rgba(0, 0, 0, 0.37),
-    inset 0 0 40px rgba(0, 212, 255, 0.05);
+/* ---- 3. Composants maison ---------------------------------- */
+@layer components {
+  /* Etiquette gravee : toutes les micro-legendes du site */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  /* Panneau : surface surelevee a arete franche */
+  .panel {
+    background: var(--color-panel);
+    border: 1px solid var(--color-edge);
+  }
+
+  /* Bande de prudence : motif industriel, sert de separateur reel */
+  .hazard {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-signal) 0 8px,
+      transparent 8px 20px
+    );
+    opacity: 0.5;
+  }
+
+  /* Equerres de reperage : le marqueur de survol des cartes.
+     Elles se rapprochent au survol -> mouvement mecanique. */
+  .bracket {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--color-signal);
+    opacity: 0;
+    transition: all 0.22s var(--ease-servo);
+  }
+  .bracket-tl { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+  .bracket-br { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+  .group:hover .bracket,
+  .group:focus-within .bracket { opacity: 1; }
+  .group:hover .bracket-tl,
+  .group:focus-within .bracket-tl { top: 4px; left: 4px; }
+  .group:hover .bracket-br,
+  .group:focus-within .bracket-br { bottom: 4px; right: 4px; }
 }
 
-/* Neon Glow Effects */
-.neon-blue {
-  text-shadow: 
-    0 0 10px rgba(0, 212, 255, 0.8),
-    0 0 20px rgba(0, 212, 255, 0.6),
-    0 0 40px rgba(0, 212, 255, 0.4);
+/* ---- 4. Animations ----------------------------------------- */
+@keyframes led {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
 }
+.animate-led { animation: led 2.4s var(--ease-servo) infinite; }
 
-.neon-purple {
-  text-shadow: 
-    0 0 10px rgba(177, 68, 255, 0.8),
-    0 0 20px rgba(177, 68, 255, 0.6),
-    0 0 40px rgba(177, 68, 255, 0.4);
+@keyframes sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
 }
+.animate-sweep { animation: sweep 6s linear infinite; }
 
-.glow-blue {
-  box-shadow: 
-    0 0 20px rgba(0, 212, 255, 0.5),
-    0 0 40px rgba(0, 212, 255, 0.3),
-    inset 0 0 20px rgba(0, 212, 255, 0.1);
-}
-
-.glow-purple {
-  box-shadow: 
-    0 0 20px rgba(177, 68, 255, 0.5),
-    0 0 40px rgba(177, 68, 255, 0.3),
-    inset 0 0 20px rgba(177, 68, 255, 0.1);
-}
-
-/* Holographic Effect */
-.holographic {
-  position: relative;
-  overflow: hidden;
-}
-
-.holographic::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 212, 255, 0.2),
-    transparent
-  );
-  animation: holographic-scan 3s infinite;
-}
-
-@keyframes holographic-scan {
-  0%, 100% { left: -100%; }
-  50% { left: 100%; }
-}
-
-/* Grid Background */
-.grid-bg {
-  background-image: 
-    linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(17, 25, 40, 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--neon-blue), var(--neon-purple));
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--neon-purple), var(--neon-blue));
-}
-
-/* Smooth Scroll */
-html {
-  scroll-behavior: smooth;
+/* ---- 5. Accessibilite : respect de prefers-reduced-motion ----
+   Doc : https://developer.mozilla.org/fr/docs/Web/CSS/@media/prefers-reduced-motion
+   Si l'utilisateur a demande moins d'animations au niveau de son
+   systeme, on coupe tout mouvement decoratif.
+-------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

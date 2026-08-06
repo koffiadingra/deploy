@@ -1,333 +1,213 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import {
-  Mail,
-  Github,
-  Linkedin,
-  Send,
-  MapPin,
-  Phone,
-  Download,
-} from "lucide-react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { toast } from "sonner@2.0.3";
+import { useState, type FormEvent } from 'react';
+import { Check, Copy, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { useI18n } from '../i18n/LanguageProvider';
+import { profile } from '../data/profile';
+import { SectionHeader } from './Ui';
+
+const inputClass =
+  'w-full border border-edge bg-inset px-3 py-2.5 text-sm text-bone placeholder:text-faint transition-colors focus:border-signal focus:outline-none';
 
 export function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const { t, pick } = useI18n();
+  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = "https://cvdesignr.com/p/691b374deade2";
-    link.download = "cv adingra koffi jean emmanuel martial";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  /**
+   * ATTENTION — changement de comportement volontaire.
+   *
+   * L'ancien formulaire affichait « Message envoye avec succes ! » alors
+   * qu'aucune requete n'etait faite : le message n'arrivait jamais.
+   * Ici, le formulaire construit un lien `mailto:` et ouvre la messagerie
+   * du visiteur. Rien n'est promis qui ne soit fait.
+   *
+   * encodeURIComponent est indispensable : sans lui, un « & » ou un saut
+   * de ligne dans le message tronquerait l'URL.
+   * Doc : https://developer.mozilla.org/fr/docs/Web/URI/Schemes/mailto
+   *
+   * Pour un envoi reellement automatique, il faudrait un service tiers
+   * (Formspree, EmailJS, Resend) ou une petite route serveur.
+   */
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
+    const subject = encodeURIComponent(form.subject || `Contact — ${form.name}`);
+    const body = encodeURIComponent(
+      `${form.message}\n\n---\n${form.name}\n${form.email}`,
+    );
+
+    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+    setSent(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success("Message envoyé avec succès! Je vous répondrai bientôt.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* API presse-papiers refusee (contexte non securise) : on ne fait rien */
+    }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const socialLinks = [
-    {
-      name: "GitHub",
-      icon: Github,
-      url: "https://github.com/koffiadingra/wecode",
-      color: "from-gray-600 to-gray-800",
-      hoverColor: "hover:text-gray-400",
-    },
-    {
-      name: "LinkedIn",
-      icon: Linkedin,
-      url: "https://www.linkedin.com/in/koffi-jean-emmanuel-martial-adingra-3b7622361/",
-      color: "from-blue-600 to-blue-800",
-      hoverColor: "hover:text-blue-400",
-    },
-    {
-      name: "Email",
-      icon: Mail,
-      url: "mailto:koffi.adingra@epitech.eu",
-      color: "from-cyan-600 to-cyan-800",
-      hoverColor: "hover:text-cyan-400",
-    },
-  ];
-
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: "koffi.adingra@epitech.eu",
-    },
-    {
-      icon: Phone,
-      label: "Téléphone",
-      value: "+225 0778909537",
-    },
-    {
-      icon: MapPin,
-      label: "Localisation",
-      value: "côte d'ivoire",
-    },
+  const details = [
+    { icon: Mail, label: t('contact.email'), value: profile.email, href: `mailto:${profile.email}` },
+    { icon: Phone, label: t('contact.phone'), value: profile.phone, href: `tel:${profile.phoneHref}` },
+    { icon: MapPin, label: t('contact.location'), value: pick(profile.location) },
+    { icon: Send, label: t('contact.availability'), value: pick(profile.availability) },
   ];
 
   return (
-    <section
-      id="contact"
-      className="min-h-screen py-20 relative overflow-hidden"
-    >
-      {/* Background Effects */}
-      <div className="absolute inset-0 grid-bg opacity-10"></div>
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.2, 0.3, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-      />
+    <section id="contact" className="border-t border-edge py-24">
+      <div className="mx-auto max-w-6xl px-5">
+        <SectionHeader index="07" eyebrow={t('contact.eyebrow')} title={t('contact.title')}>
+          {t('contact.intro')}
+        </SectionHeader>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-6xl neon-blue mb-4">Contactez-moi</h2>
-          <div className="h-1 w-32 bg-gradient-to-r from-cyan-500 to-purple-600 mx-auto rounded-full"></div>
-          <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
-            Vous avez un projet en tête ? N'hésitez pas à me contacter pour en
-            discuter
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="glass rounded-3xl p-8 holographic"
-          >
-            <h3 className="text-2xl mb-6 text-cyan-400">
-              Envoyez-moi un message
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
+          {/* Formulaire */}
+          <form onSubmit={handleSubmit} className="panel p-6 md:p-8">
+            <div className="grid gap-5 sm:grid-cols-2">
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm mb-2 text-gray-300"
-                >
-                  Nom complet
+                <label htmlFor="name" className="label mb-2 block">
+                  {t('contact.name')}
                 </label>
-                <Input
+                <input
                   id="name"
                   name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleChange}
                   required
-                  className="glass border-cyan-500/30 focus:border-cyan-500 bg-white/5"
-                  placeholder="Votre nom"
+                  autoComplete="name"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder={t('contact.namePlaceholder')}
+                  className={inputClass}
                 />
               </div>
-
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm mb-2 text-gray-300"
-                >
-                  Email
+                <label htmlFor="email" className="label mb-2 block">
+                  {t('contact.email')}
                 </label>
-                <Input
+                <input
                   id="email"
                   name="email"
                   type="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   required
-                  className="glass border-cyan-500/30 focus:border-cyan-500 bg-white/5"
-                  placeholder="votre.email@example.com"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder={t('contact.emailPlaceholder')}
+                  className={inputClass}
                 />
               </div>
+            </div>
 
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm mb-2 text-gray-300"
-                >
-                  Sujet
-                </label>
-                <Input
-                  id="subject"
-                  name="subject"
-                  type="text"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className="glass border-cyan-500/30 focus:border-cyan-500 bg-white/5"
-                  placeholder="Sujet de votre message"
-                />
-              </div>
+            <div className="mt-5">
+              <label htmlFor="subject" className="label mb-2 block">
+                {t('contact.subject')}
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                required
+                value={form.subject}
+                onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                placeholder={t('contact.subjectPlaceholder')}
+                className={inputClass}
+              />
+            </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm mb-2 text-gray-300"
-                >
-                  Message
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  className="glass border-cyan-500/30 focus:border-cyan-500 bg-white/5 resize-none"
-                  placeholder="Décrivez votre projet ou votre demande..."
-                />
-              </div>
+            <div className="mt-5">
+              <label htmlFor="message" className="label mb-2 block">
+                {t('contact.message')}
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows={5}
+                value={form.message}
+                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                placeholder={t('contact.messagePlaceholder')}
+                className={`${inputClass} resize-y`}
+              />
+            </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 glow-blue"
-              >
-                <Send className="w-4 h-4 mr-2" />
-                Envoyer le message
-              </Button>
-            </form>
-          </motion.div>
-
-          {/* Contact Info & Social Links */}
-          <div className="space-y-8">
-            {/* Contact Info Cards */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-4"
+            <button
+              type="submit"
+              className="mt-6 inline-flex items-center gap-2 bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-bone"
             >
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="glass rounded-2xl p-6 holographic flex items-center space-x-4 hover:scale-105 transition-transform"
-                >
-                  <div className="p-3 rounded-xl bg-gradient-to-br from-cyan-500 to-purple-600 glow-blue">
-                    <info.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-gray-400">{info.label}</div>
-                    <div className="text-cyan-400">{info.value}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+              <Send className="h-4 w-4" />
+              {t('contact.send')}
+            </button>
 
-            {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="glass rounded-2xl p-8 holographic"
+            {/* Zone d'etat annoncee aux lecteurs d'ecran quand elle change */}
+            <p
+              role="status"
+              aria-live="polite"
+              className="mt-4 font-mono text-[11px] leading-relaxed text-muted"
             >
-              <h3 className="text-xl mb-6 text-purple-400">Réseaux Sociaux</h3>
-              <div className="flex gap-4">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ scale: 1.1, rotateZ: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`flex-1 glass rounded-xl p-6 flex flex-col items-center justify-center space-y-3 ${social.hoverColor} transition-colors group`}
-                  >
-                    <div
-                      className={`p-4 rounded-xl bg-gradient-to-br ${social.color} group-hover:scale-110 transition-transform`}
-                    >
-                      <social.icon className="w-8 h-8 text-white" />
+              {sent ? t('contact.opened') : t('contact.formNote')}
+            </p>
+          </form>
+
+          {/* Coordonnees */}
+          <div className="space-y-4">
+            <div className="panel p-6">
+              <h3 className="label mb-5">{t('contact.infoTitle')}</h3>
+              <ul className="space-y-4">
+                {details.map((item) => (
+                  <li key={item.label} className="flex items-start gap-3">
+                    <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-signal" aria-hidden="true" />
+                    <div className="min-w-0">
+                      <div className="label">{item.label}</div>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="block break-words text-sm text-bone hover:text-signal"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <div className="text-sm text-bone">{item.value}</div>
+                      )}
                     </div>
-                    <span className="text-sm text-gray-400">{social.name}</span>
-                  </motion.a>
+                  </li>
                 ))}
-              </div>
-            </motion.div>
+              </ul>
 
-            {/* Download CV */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              {/* <Button
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 glow-purple h-14"
-                onClick={() => toast.info('Le téléchargement du CV commencera bientôt')}
+              <button
+                type="button"
+                onClick={copyEmail}
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 border border-edge-hi px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.14em] text-muted transition-colors hover:border-signal hover:text-signal"
               >
-                <Download className="w-5 h-5 mr-2" />
-                Télécharger mon CV
-                <a href="https://cvdesignr.com/p/691b374deade2"></a>
-              </Button> */}
-              <Button
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 glow-purple h-14"
-                onClick={() => {
-                  handleDownload();
-                  toast.info("Le téléchargement du CV commencera bientôt");
-                }}
-              >
-                <Download className="w-5 h-5 mr-2" />
-                Télécharger mon CV
-              </Button>
-            </motion.div>
+                {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                {copied ? t('contact.copied') : t('contact.copy')}
+              </button>
+            </div>
 
-            {/* Availability Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="glass rounded-2xl p-6 text-center holographic"
-            >
-              <div className="flex items-center justify-center space-x-2 mb-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-green-400">
-                  Disponible pour de nouveaux projets
-                </span>
+            <div className="panel p-6">
+              <h3 className="label mb-5">{t('contact.linksTitle')}</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <a
+                  href={profile.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-2 border border-edge px-4 py-4 text-muted transition-colors hover:border-signal hover:text-signal"
+                >
+                  <Github className="h-5 w-5" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em]">GitHub</span>
+                </a>
+                <a
+                  href={profile.links.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-2 border border-edge px-4 py-4 text-muted transition-colors hover:border-signal hover:text-signal"
+                >
+                  <Linkedin className="h-5 w-5" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em]">LinkedIn</span>
+                </a>
               </div>
-              <p className="text-sm text-gray-400">
-                Temps de réponse moyen : 24-48h
-              </p>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

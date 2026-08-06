@@ -1,147 +1,85 @@
-import { motion } from "motion/react";
-import { ChevronDown, Sparkles } from "lucide-react";
-import { Button } from "./ui/button";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ArrowDown, Download, FolderGit2 } from 'lucide-react';
+import { useI18n } from '../i18n/LanguageProvider';
+import { profile } from '../data/profile';
+import { Robot } from './Robot';
 
 export function Hero() {
+  const { t, pick } = useI18n();
+
   return (
-    <section
-      id="home"
-      className="min-h-screen relative flex items-center justify-center overflow-hidden pt-20"
-    >
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 grid-bg opacity-20"></div>
-
-      {/* Floating Orbs */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 0.5, 0.3],
+    <section id="home" className="relative overflow-hidden pt-28 pb-20 md:pt-36">
+      {/* Trame de fond : grille technique tres discrete, dessinee en CSS
+          plutot qu'en image pour ne rien telecharger. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.16]"
+        style={{
+          backgroundImage:
+            'linear-gradient(var(--color-edge) 1px, transparent 1px), linear-gradient(90deg, var(--color-edge) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          maskImage: 'radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%)',
         }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute top-20 left-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-      />
-      <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          opacity: [0.5, 0.3, 0.5],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute bottom-20 right-10 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl"
       />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="flex flex-col items-center text-center space-y-8">
-          {/* Profile Image with 3D Effect */}
-          <motion.div
-            initial={{ scale: 0, rotate: -180 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 260,
-              damping: 20,
-              delay: 0.2,
-            }}
-            className="relative"
-          >
-            {/* <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full blur-2xl opacity-50 animate-pulse"></div> */}
-            <div className="relative glass rounded-full p-2 glow-blue">
-              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-cyan-400/30 holographic">
-                <ImageWithFallback
-                  src="/src/assets/1763398165966.png"
-                  alt="ADINGRA Koffi Jean Emmanuel Martial"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            {/* Orbiting Icons */}
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0"
+      <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-[1.15fr_1fr]">
+        <div>
+          {/* Ligne d'etat, style afficheur de machine */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span className="h-2 w-2 bg-live animate-led" aria-hidden="true" />
+            <span className="label text-live">{t('hero.status')}</span>
+            <span className="h-px flex-1 bg-edge" aria-hidden="true" />
+            <span className="label">{pick(profile.location)}</span>
+          </div>
+
+          <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-signal">
+            {t('hero.role')}
+          </p>
+
+          <h1 className="mt-3 font-display text-5xl leading-[0.95] uppercase tracking-tight text-bone sm:text-6xl lg:text-7xl">
+            Koffi Jean
+            <br />
+            Emmanuel Martial
+            <br />
+            <span className="text-muted">Adingra</span>
+          </h1>
+
+          <p className="mt-7 max-w-xl text-[15px] leading-relaxed text-muted">
+            {t('hero.pitch')}
+          </p>
+
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a
+              href="#projects"
+              className="group inline-flex items-center gap-2 bg-signal px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink transition-colors duration-150 hover:bg-bone"
             >
-              <Sparkles className="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-6 text-cyan-400" />
-            </motion.div>
-          </motion.div>
-
-          {/* Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="space-y-4"
-          >
-            <h1 className="text-4xl md:text-6xl lg:text-7xl neon-blue">
-              Bienvenue sur mon Portfolio
-            </h1>
-            <div className="text-2xl md:text-4xl text-purple-400 neon-purple">
-              Développeur Full-Stack
-            </div>
-          </motion.div>
-
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-xl md:text-2xl text-cyan-300 max-w-2xl"
-          >
-            Innovation technologique et créativité digitale
-          </motion.p>
-
-          {/* Introduction Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="glass rounded-2xl p-6 md:p-8 max-w-4xl holographic"
-          >
-            <p className="text-gray-300 leading-relaxed">
-              Dans le domaine de l'innovation technologique et de la créativité,
-              un portfolio est le reflet digital de mes compétences, expériences
-              et visions. Cette interface met en avant mon évolution en tant que
-              développeur, où code, design et individualité se rencontrent.
-            </p>
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-wrap gap-4 justify-center"
-          >
-            <Button
-              asChild
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 glow-blue"
+              <FolderGit2 className="h-4 w-4" />
+              {t('hero.ctaProjects')}
+            </a>
+            <a
+              href={profile.cvFile}
+              download
+              className="inline-flex items-center gap-2 border border-edge-hi px-5 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-bone transition-colors duration-150 hover:border-signal hover:text-signal"
             >
-              <a href="#about">À propos de moi</a>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-purple-500/50 hover:bg-purple-500/10 glow-purple"
-            >
-              <a href="#projects">Mes projets</a>
-            </Button>
-          </motion.div>
+              <Download className="h-4 w-4" />
+              {t('hero.ctaCv')}
+            </a>
+          </div>
 
-          {/* Scroll Indicator */}
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          <a
+            href="#about"
+            className="mt-12 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-faint hover:text-signal"
           >
-            <ChevronDown className="w-8 h-8 text-cyan-400" />
-          </motion.div>
+            <ArrowDown className="h-3 w-3" />
+            {t('hero.scroll')}
+          </a>
+        </div>
+
+        {/* Le robot. Sur mobile il passe au-dessus du texte via order. */}
+        <div className="order-first flex flex-col items-center md:order-none">
+          <div className="relative w-full max-w-[320px]">
+            <Robot className="w-full" />
+          </div>
+          <p className="mt-2 hidden label text-center md:block">{t('hero.robotHint')}</p>
         </div>
       </div>
     </section>
