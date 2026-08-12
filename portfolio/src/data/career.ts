@@ -104,6 +104,22 @@ export const education: Education[] = [
     },
   },
   {
+    id: 'google Workspace',
+    title: { fr: 'Formation google Workspace ', en: 'google Workspace training' },
+    school: {
+      fr: 'GDGs Afrique Francophone',
+      en: 'DGs for Francophone Africa',
+    },
+    period: {
+      fr: 'Avril 2025 — Mai 2025',
+      en: 'April 2025 — May 2025',
+    },
+    detail: {
+      fr: 'Formation qui portait sur l’apprentissage des outils Google Workspace et Firebase.',
+      en: 'A training session focused on learning how to use Google Workspace and Firebase tools.',
+    },
+  },
+  {
     id: 'licence-2025',
     title: {
       fr: 'Licence en développement d’applications et services',
