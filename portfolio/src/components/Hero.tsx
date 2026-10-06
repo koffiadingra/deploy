@@ -1,15 +1,21 @@
 import { ArrowDown, Download, FolderGit2 } from 'lucide-react';
 import { useI18n } from '../i18n/LanguageProvider';
-import { profile } from '../data/profile';
+import { useContent } from '../content/ContentProvider';
 import { Robot } from './Robot';
 
 export function Hero() {
   const { t, pick } = useI18n();
+  const { profile } = useContent();
+
+  // Le dernier mot est affiché en retrait sur sa propre ligne : règle de la
+  // maquette, pas une supposition sur l'état civil.
+  const parts = profile.fullName.trim().split(/\s+/);
+  const surname = parts.length > 1 ? parts[parts.length - 1] : '';
+  const givenNames = parts.length > 1 ? parts.slice(0, -1) : parts;
 
   return (
     <section id="home" className="relative overflow-hidden pt-28 pb-20 md:pt-36">
-      {/* Trame de fond : grille technique tres discrete, dessinee en CSS
-          plutot qu'en image pour ne rien telecharger. */}
+      {/* Grille dessinée en CSS plutôt qu'en image : rien à télécharger. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.16]"
@@ -23,7 +29,6 @@ export function Hero() {
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-5 md:grid-cols-[1.15fr_1fr]">
         <div>
-          {/* Ligne d'etat, style afficheur de machine */}
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="h-2 w-2 bg-live animate-led" aria-hidden="true" />
             <span className="label text-live">{t('hero.status')}</span>
@@ -32,19 +37,21 @@ export function Hero() {
           </div>
 
           <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-signal">
-            {t('hero.role')}
+            {pick(profile.role)}
           </p>
 
           <h1 className="mt-3 font-display text-5xl leading-[0.95] uppercase tracking-tight text-bone sm:text-6xl lg:text-7xl">
-            Koffi Jean
-            <br />
-            Emmanuel Martial
-            <br />
-            <span className="text-muted">Adingra</span>
+            {givenNames.join(' ')}
+            {surname ? (
+              <>
+                <br />
+                <span className="text-muted">{surname}</span>
+              </>
+            ) : null}
           </h1>
 
           <p className="mt-7 max-w-xl text-[15px] leading-relaxed text-muted">
-            {t('hero.pitch')}
+            {pick(profile.pitch)}
           </p>
 
           <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -74,7 +81,7 @@ export function Hero() {
           </a>
         </div>
 
-        {/* Le robot. Sur mobile il passe au-dessus du texte via order. */}
+        {/* Sur mobile, `order-first` place le robot au-dessus du texte. */}
         <div className="order-first flex flex-col items-center md:order-none">
           <div className="relative w-full max-w-[320px]">
             <Robot className="w-full" />

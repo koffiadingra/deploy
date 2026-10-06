@@ -1,15 +1,8 @@
-import type { Localized } from '../i18n/config';
+import type { Localized } from '../i18n/languages';
 
-/**
- * Niveau declare.
- *
- * CHOIX ASSUME : l'ancien portfolio affichait des pourcentages
- * (Vue.js 98 %, React 95 %...). Ces chiffres ne reposaient sur aucune
- * mesure et, sur un profil junior, ils se retournent contre le candidat
- * en entretien. Ils sont remplaces par deux etats verifiables :
- *   - 'project'  : deja utilise sur un projet ou en stage
- *   - 'learning' : en cours d'apprentissage
- */
+// Deux états vérifiables au lieu de pourcentages inventés :
+//   'project'  : déjà utilisé sur un projet ou en stage
+//   'learning' : en cours d'apprentissage
 export type SkillLevel = 'project' | 'learning';
 
 export interface Skill {
@@ -20,16 +13,13 @@ export interface Skill {
 export interface SkillGroup {
   id: string;
   title: Localized;
-  /** Nom d'icone Lucide utilise par le composant Skills. */
+  /** Nom d'icône Lucide. */
   icon: 'server' | 'layout' | 'database' | 'container' | 'flask' | 'smartphone';
   skills: Skill[];
 }
 
-/**
- * SOURCES : rubrique "Competences" du CV, plus les technologies
- * explicitement citees dans l'experience et les projets du CV
- * (Docker, docker-compose, GitLab CI, Jest, Playwright, JIRA...).
- */
+// Source : rubrique « Compétences » du CV, plus les technologies citées dans
+// l'expérience et les projets.
 export const skillGroups: SkillGroup[] = [
   {
     id: 'backend',

@@ -1,15 +1,9 @@
 import type { Lang } from './config';
 
-/**
- * Dictionnaire des textes d'INTERFACE (titres de section, boutons,
- * libelles de formulaire...). Les contenus metier (projets, experience)
- * vivent dans src/data/ pour ne pas melanger structure et donnees.
- *
- * Astuce de typage : `fr` est la reference. `UiKey` en derive, et `en`
- * est declare comme Record<UiKey, string>. Consequence concrete :
- * si on ajoute une cle en francais sans la traduire, `npx tsc --noEmit`
- * echoue. Impossible d'oublier une traduction en silence.
- */
+// Textes d'interface uniquement : les contenus métier viennent de la base.
+//
+// `fr` sert de référence, `UiKey` en dérive et `en` est un Record<UiKey,…> :
+// ajouter une clé française sans la traduire fait échouer la compilation.
 
 const fr = {
   // Navigation
@@ -26,10 +20,7 @@ const fr = {
 
   // Hero
   'hero.status': 'Disponible',
-  'hero.role': 'Développeur Full-Stack',
   'hero.name': 'Koffi Jean Emmanuel Martial ADINGRA',
-  'hero.pitch':
-    'Je construis des applications web de bout en bout : API REST Laravel, interfaces Next.js et TypeScript, base de données, conteneurisation Docker et intégration continue GitLab.',
   'hero.ctaProjects': 'Voir les projets',
   'hero.ctaCv': 'Télécharger le CV (FR)',
   'hero.robotHint': 'Bougez la souris — il vous suit',
@@ -38,10 +29,6 @@ const fr = {
   // Sections
   'about.eyebrow': 'Profil',
   'about.title': 'Qui je suis',
-  'about.body1':
-    'Développeur full-stack déterminé, sérieux et autonome, je m’investis pleinement dans chaque projet. Conscient des défis techniques du métier, je fais preuve de rigueur, d’adaptation et d’un sens aigu des responsabilités. Passionné par la création de solutions fiables, je maîtrise aussi bien le backend que le frontend.',
-  'about.body2':
-    'Au quotidien : Laravel côté serveur, Next.js / React / TypeScript côté client, bases PostgreSQL ou MySQL, API normalisées, tests, revues de code, pipelines GitLab CI et environnements reproductibles avec Docker.',
   'about.langTitle': 'Langues',
   'about.softTitle': 'Savoir-être',
   'about.interestsTitle': 'Centres d’intérêt',
@@ -119,10 +106,7 @@ const en: Record<UiKey, string> = {
   'nav.langLabel': 'Change language',
 
   'hero.status': 'Available',
-  'hero.role': 'Full-Stack Developer',
   'hero.name': 'Koffi Jean Emmanuel Martial ADINGRA',
-  'hero.pitch':
-    'I build web applications end to end: Laravel REST APIs, Next.js and TypeScript interfaces, databases, Docker containers and GitLab continuous integration.',
   'hero.ctaProjects': 'See projects',
   'hero.ctaCv': 'Download CV (EN)',
   'hero.robotHint': 'Move your mouse — it follows you',
@@ -130,10 +114,6 @@ const en: Record<UiKey, string> = {
 
   'about.eyebrow': 'Profile',
   'about.title': 'Who I am',
-  'about.body1':
-    'As a determined, serious, and independent full-stack developer, I am fully committed to every project. Aware of the technical challenges of the role, I am rigorous, adaptable, and possess a strong sense of responsibility. Passionate about creating reliable solutions, I am proficient in both backend and frontend development.',
-  'about.body2':
-    'Day to day: Laravel on the server side, Next.js / React / TypeScript on the client side, PostgreSQL or MySQL databases, standardized APIs, tests, code reviews, GitLab CI pipelines and reproducible environments with Docker.',
   'about.langTitle': 'Languages',
   'about.softTitle': 'Soft skills',
   'about.interestsTitle': 'Interests',

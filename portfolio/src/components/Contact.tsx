@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
-import { Check, Copy, Flag, Github, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
+import { Check, Copy, Flag, Github, Gitlab, Linkedin, Mail, MapPin, Phone, Send } from 'lucide-react';
 import { useI18n } from '../i18n/LanguageProvider';
-import { profile } from '../data/profile';
+import { useContent } from '../content/ContentProvider';
 import { SectionHeader } from './Ui';
 
 const inputClass =
@@ -9,25 +9,16 @@ const inputClass =
 
 export function Contact() {
   const { t, pick } = useI18n();
+  const { profile } = useContent();
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [sent, setSent] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  /**
-   * ATTENTION — changement de comportement volontaire.
-   *
-   * L'ancien formulaire affichait « Message envoye avec succes ! » alors
-   * qu'aucune requete n'etait faite : le message n'arrivait jamais.
-   * Ici, le formulaire construit un lien `mailto:` et ouvre la messagerie
-   * du visiteur. Rien n'est promis qui ne soit fait.
-   *
-   * encodeURIComponent est indispensable : sans lui, un « & » ou un saut
-   * de ligne dans le message tronquerait l'URL.
-   * Doc : https://developer.mozilla.org/fr/docs/Web/URI/Schemes/mailto
-   *
-   * Pour un envoi reellement automatique, il faudrait un service tiers
-   * (Formspree, EmailJS, Resend) ou une petite route serveur.
-   */
+  // Construit un lien mailto: et ouvre la messagerie du visiteur ; rien n'est
+  // envoyé par le site. encodeURIComponent est indispensable, sans lui un « & »
+  // ou un saut de ligne tronquerait l'URL.
+  // Pour un envoi automatique : service tiers (Formspree, EmailJS, Resend) ou
+  // une route serveur.
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
@@ -46,7 +37,7 @@ export function Contact() {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      /* API presse-papiers refusee (contexte non securise) : on ne fait rien */
+      /* presse-papiers refusé hors contexte sécurisé */
     }
   };
 
@@ -66,7 +57,6 @@ export function Contact() {
         </SectionHeader>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-          {/* Formulaire */}
           <form onSubmit={handleSubmit} className="panel p-6 md:p-8">
             <div className="grid gap-5 sm:grid-cols-2">
               <div>
@@ -141,7 +131,7 @@ export function Contact() {
               {t('contact.send')}
             </button>
 
-            {/* Zone d'etat annoncee aux lecteurs d'ecran quand elle change */}
+            {/* Annoncée aux lecteurs d'écran à chaque changement. */}
             <p
               role="status"
               aria-live="polite"
@@ -151,7 +141,6 @@ export function Contact() {
             </p>
           </form>
 
-          {/* Coordonnees */}
           <div className="space-y-4">
             <div className="panel p-6">
               <h3 className="label mb-5">{t('contact.infoTitle')}</h3>
@@ -190,7 +179,7 @@ export function Contact() {
               <h3 className="label mb-5">{t('contact.linksTitle')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 <a
-                  href={profile.links.github}
+                  href={profile.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-2 border border-edge px-4 py-4 text-muted transition-colors hover:border-signal hover:text-signal"
@@ -199,7 +188,7 @@ export function Contact() {
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em]">GitHub</span>
                 </a>
                 <a
-                  href={profile.links.linkedin}
+                  href={profile.linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex flex-col items-center gap-2 border border-edge px-4 py-4 text-muted transition-colors hover:border-signal hover:text-signal"
@@ -207,6 +196,17 @@ export function Contact() {
                   <Linkedin className="h-5 w-5" />
                   <span className="font-mono text-[10px] uppercase tracking-[0.14em]">LinkedIn</span>
                 </a>
+                {profile.gitlabUrl ? (
+                  <a
+                    href={profile.gitlabUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-2 border border-edge px-4 py-4 text-muted transition-colors hover:border-signal hover:text-signal"
+                  >
+                    <Gitlab className="h-5 w-5" />
+                    <span className="font-mono text-[10px] uppercase tracking-[0.14em]">GitLab</span>
+                  </a>
+                ) : null}
               </div>
             </div>
           </div>

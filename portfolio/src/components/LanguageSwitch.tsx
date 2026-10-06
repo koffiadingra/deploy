@@ -1,15 +1,8 @@
 import { LANGUAGES, LANGUAGE_LABELS } from '../i18n/config';
 import { useI18n } from '../i18n/LanguageProvider';
 
-/**
- * Selecteur de langue, dessine comme un interrupteur a deux positions
- * sur un boitier : un curseur orange glisse sous la langue active.
- *
- * Accessibilite : `role="group"` + `aria-pressed` sur chaque bouton.
- * Un lecteur d'ecran annonce donc laquelle des deux est selectionnee,
- * ce que la couleur seule ne transmettrait pas.
- * Doc : https://developer.mozilla.org/fr/docs/Web/Accessibility/ARIA/Attributes/aria-pressed
- */
+// `aria-pressed` fait annoncer la langue active par les lecteurs d'écran, ce
+// que la couleur du curseur ne transmet pas.
 export function LanguageSwitch() {
   const { lang, setLang, t } = useI18n();
   const activeIndex = LANGUAGES.indexOf(lang);
@@ -20,7 +13,7 @@ export function LanguageSwitch() {
       aria-label={t('nav.langLabel')}
       className="relative flex border border-edge bg-inset"
     >
-      {/* Curseur : un seul element qui se translate, pas deux fonds qui clignotent */}
+      {/* Un seul élément qui se translate, pas deux fonds qui clignotent. */}
       <span
         aria-hidden="true"
         className="absolute inset-y-0 left-0 w-1/2 bg-signal transition-transform duration-200 ease-servo"

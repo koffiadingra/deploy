@@ -1,49 +1,35 @@
-/* ============================================================
-   Portfolio — Koffi Jean Emmanuel Martial ADINGRA
-   Direction artistique : "panneau de maintenance robotique"
-   Reference Tailwind v4 : https://tailwindcss.com/docs/theme
-   ============================================================ */
-
 @import "tailwindcss";
 
-/* ---- 1. Tokens de design -----------------------------------
-   En Tailwind v4, tout ce qui est declare dans @theme devient
-   automatiquement une classe utilitaire :
-     --color-signal  ->  bg-signal / text-signal / border-signal
-     --font-display  ->  font-display
-     --ease-servo    ->  ease-servo
-   Doc : https://tailwindcss.com/docs/theme#theme-variable-namespaces
-------------------------------------------------------------- */
+/* Tailwind v4 : toute variable declaree dans @theme devient une classe
+   utilitaire — --color-signal donne bg-signal, text-signal, border-signal. */
 @theme {
-  /* Chassis : gris chauds, pas du noir pur. On empile des surfaces. */
+  /* Gris chauds, pas du noir pur : les surfaces s'empilent. */
   --color-ink: #131110;
   --color-panel: #1b1917;
   --color-inset: #232120;
   --color-edge: #34302b;
   --color-edge-hi: #4a443d;
 
-  /* Texte : blanc casse facon metal peint */
+  /* Blanc cassé, façon métal peint. */
   --color-bone: #ede8e0;
   --color-muted: #948c81;
   --color-faint: #6b645c;
 
-  /* Signaletique fonctionnelle (comme sur une vraie machine) */
+  /* Signalétique fonctionnelle. */
   --color-signal: #ff6a13; /* orange securite : action / lien */
   --color-signal-dim: #b34a0d;
   --color-live: #56d6a0; /* LED etat OK */
   --color-warn: #f5c542; /* bande de prudence */
 
-  /* Typographie */
   --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
   --font-sans: "IBM Plex Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  /* Mouvement : course de servomoteur, jamais de rebond */
+  /* Course de servomoteur, jamais de rebond. */
   --ease-servo: cubic-bezier(0.2, 0, 0, 1);
   --ease-step: steps(6, end);
 }
 
-/* ---- 2. Base ---------------------------------------------- */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -57,7 +43,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Accessibilite : focus clavier toujours visible */
   :focus-visible {
     outline: 2px solid var(--color-signal);
     outline-offset: 3px;
@@ -83,9 +68,8 @@
   }
 }
 
-/* ---- 3. Composants maison ---------------------------------- */
 @layer components {
-  /* Etiquette gravee : toutes les micro-legendes du site */
+  /* Micro-légendes du site. */
   .label {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
@@ -94,13 +78,13 @@
     color: var(--color-faint);
   }
 
-  /* Panneau : surface surelevee a arete franche */
+  /* Surface surélevée à arête franche. */
   .panel {
     background: var(--color-panel);
     border: 1px solid var(--color-edge);
   }
 
-  /* Bande de prudence : motif industriel, sert de separateur reel */
+  /* Bande de prudence : sert de séparateur de section. */
   .hazard {
     background-image: repeating-linear-gradient(
       -45deg,
@@ -110,8 +94,7 @@
     opacity: 0.5;
   }
 
-  /* Equerres de reperage : le marqueur de survol des cartes.
-     Elles se rapprochent au survol -> mouvement mecanique. */
+  /* Marqueur de survol des cartes : les équerres se rapprochent. */
   .bracket {
     position: absolute;
     width: 10px;
@@ -130,7 +113,6 @@
   .group:focus-within .bracket-br { bottom: 4px; right: 4px; }
 }
 
-/* ---- 4. Animations ----------------------------------------- */
 @keyframes led {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.25; }
@@ -143,11 +125,8 @@
 }
 .animate-sweep { animation: sweep 6s linear infinite; }
 
-/* ---- 5. Accessibilite : respect de prefers-reduced-motion ----
-   Doc : https://developer.mozilla.org/fr/docs/Web/CSS/@media/prefers-reduced-motion
-   Si l'utilisateur a demande moins d'animations au niveau de son
-   systeme, on coupe tout mouvement decoratif.
--------------------------------------------------------------- */
+/* Coupe tout mouvement décoratif si le système le demande. Les animations
+   pilotées en JavaScript sont traitées dans usePrefersReducedMotion. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

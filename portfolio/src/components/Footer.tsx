@@ -1,9 +1,10 @@
 import { ArrowUp } from 'lucide-react';
 import { useI18n } from '../i18n/LanguageProvider';
-import { profile } from '../data/profile';
+import { useContent } from '../content/ContentProvider';
 
 export function Footer() {
   const { t } = useI18n();
+  const { profile } = useContent();
 
   return (
     <footer className="border-t border-edge">

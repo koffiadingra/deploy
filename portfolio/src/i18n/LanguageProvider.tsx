@@ -16,18 +16,10 @@ import {
 } from './config';
 import { ui, type UiKey } from './ui';
 
-/**
- * Provider de langue.
- *
- * Pourquoi la Context API et pas une librairie type i18next ?
- * Le site a deux langues et environ 80 chaines. La Context API de React
- * suffit, ne pese rien dans le bundle, et reste entierement lisible.
- * Doc : https://react.dev/reference/react/createContext
- *
- * Le provider expose deux fonctions :
- *   t(cle)     -> texte d'interface depuis le dictionnaire
- *   pick(objet)-> valeur traduite d'une donnee { fr, en }
- */
+// Context API plutôt qu'une bibliothèque i18n : deux langues et ~80 chaînes ne
+// justifient pas le poids d'i18next.
+// Expose t(clé) pour les textes d'interface et pick(objet) pour les données
+// bilingues { fr, en }.
 
 interface I18nValue {
   lang: Lang;
@@ -40,20 +32,16 @@ interface I18nValue {
 const I18nContext = createContext<I18nValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // Initialiseur paresseux : la fonction n'est evaluee qu'au premier rendu,
-  // on ne relit donc pas localStorage a chaque re-render.
-  // Doc : https://react.dev/reference/react/useState#avoiding-recreating-the-initial-state
+  // Initialiseur paresseux : localStorage n'est relu qu'au premier rendu.
   const [lang, setLang] = useState<Lang>(resolveInitialLang);
 
-  // Effet de bord unique : synchroniser le DOM et le stockage.
-  // `document.documentElement.lang` est important pour l'accessibilite
-  // (lecteurs d'ecran) et pour le referencement.
+  // `documentElement.lang` compte pour les lecteurs d'écran et le référencement.
   useEffect(() => {
     document.documentElement.lang = lang;
     try {
       window.localStorage.setItem(STORAGE_KEY, lang);
     } catch {
-      /* stockage indisponible : le site fonctionne quand meme */
+      /* stockage indisponible */
     }
   }, [lang]);
 
@@ -66,8 +54,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  // Declaration `function` plutot qu'arrow : dans un fichier .tsx,
-  // `<T>(...) => ...` serait interprete comme une balise JSX.
+  // Déclaration `function` et non arrow : dans un .tsx, `<T>(...) =>` serait
+  // lu comme une balise JSX.
   const pick = useCallback(
     function <T>(value: Localized<T>): T {
       return value[lang];
@@ -75,8 +63,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [lang],
   );
 
-  // useMemo evite de recreer l'objet de contexte a chaque rendu,
-  // ce qui re-rendrait inutilement tous les consommateurs.
+  // Évite de recréer l'objet de contexte, ce qui re-rendrait tous les consommateurs.
   const value = useMemo<I18nValue>(
     () => ({ lang, setLang, toggle, t, pick }),
     [lang, toggle, t, pick],
@@ -85,7 +72,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 
-/** Hook d'acces. Leve une erreur explicite si on oublie le provider. */
 export function useI18n(): I18nValue {
   const ctx = useContext(I18nContext);
   if (!ctx) {

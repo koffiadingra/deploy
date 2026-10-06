@@ -5,39 +5,13 @@ interface RobotProps {
   className?: string;
 }
 
-/**
- * ROBOT — element signature du portfolio.
- *
- * Le robot regarde le curseur. Trois comportements :
- *   1. suivi     : les yeux se deplacent vers le pointeur, la tete s'incline
- *   2. veille    : sans mouvement pendant 4 s, il balaie lentement la piece
- *   3. clignement: un volet passe devant la visiere a intervalle irregulier
- *
- * DECISIONS TECHNIQUES
- *
- * a) Pas de state React pour l'animation.
- *    Un `setState` par mouvement de souris declencherait un rendu React
- *    complet a ~120 Hz. On ecrit donc directement dans le DOM via des refs,
- *    dans une boucle requestAnimationFrame. React garde la structure,
- *    la boucle gere le mouvement. C'est le meme principe que celui
- *    recommande pour les valeurs animees hors rendu.
- *    Doc : https://react.dev/reference/react/useRef#manipulating-the-dom-with-a-ref
- *
- * b) Lissage par interpolation lineaire (lerp).
- *    A chaque frame : position += (cible - position) * 0.12
- *    La position n'atteint jamais la cible d'un coup, elle la rattrape.
- *    C'est ce qui donne la course legerement molle d'un servomoteur
- *    plutot qu'un deplacement d'un seul bloc.
- *
- * c) `transform` en attribut SVG et non en CSS.
- *    `rotate(angle, cx, cy)` en SVG prend son centre en parametre, ce qui
- *    evite d'avoir a gerer transform-origin / transform-box selon les
- *    navigateurs.
- *    Doc : https://developer.mozilla.org/fr/docs/Web/SVG/Attribute/transform
- *
- * d) prefers-reduced-motion coupe la boucle entierement (pas seulement
- *    l'apparence) : aucune frame n'est calculee.
- */
+// Le regard suit le curseur ; veille après 4 s sans mouvement.
+//
+// Aucun state React : un setState par mouvement déclencherait un rendu complet
+// à ~120 Hz, donc la boucle rAF écrit dans le DOM via des refs. Le lissage
+// `position += (cible - position) * 0.12` donne la course molle d'un
+// servomoteur. `transform` est un attribut SVG, car rotate(angle, cx, cy) prend
+// son centre en paramètre. prefers-reduced-motion coupe la boucle entièrement.
 export function Robot({ className = '' }: RobotProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const headRef = useRef<SVGGElement>(null);
@@ -54,7 +28,7 @@ export function Robot({ className = '' }: RobotProps) {
     const shutter = shutterRef.current;
     if (!svg || !head || !eyes || !shutter) return;
 
-    // Cibles (ou l'on veut aller) et positions courantes (ou l'on est).
+    // Cibles visées et positions courantes.
     let targetX = 0;
     let targetY = 0;
     let x = 0;
@@ -64,12 +38,12 @@ export function Robot({ className = '' }: RobotProps) {
     let blinkAt = performance.now() + 2500;
     let blinkUntil = 0;
 
-    /** Rayon d'influence : au-dela, le regard est deja au maximum. */
+    // Rayon d'influence : au-delà, le regard est déjà au maximum.
     const REACH = 420;
-    /** Amplitude du deplacement des yeux, en unites du viewBox. */
+    // Amplitude des yeux, en unités du viewBox.
     const EYE_X = 11;
     const EYE_Y = 6;
-    /** Inclinaison maximale de la tete, en degres. */
+    // Inclinaison maximale, en degrés.
     const TILT = 5;
 
     const clamp = (v: number) => Math.max(-1, Math.min(1, v));
@@ -84,18 +58,16 @@ export function Robot({ className = '' }: RobotProps) {
     };
 
     const onPointerDown = () => {
-      // Clin d'oeil de confirmation au clic.
       blinkUntil = performance.now() + 130;
     };
 
     const tick = (now: number) => {
-      // Mode veille : plus de 4 s sans mouvement -> balayage sinusoidal lent.
+      // Veille : plus de 4 s sans mouvement.
       if (now - lastMove > 4000) {
         targetX = Math.sin(now / 2200) * 0.65;
         targetY = Math.sin(now / 3700) * 0.28;
       }
 
-      // Lissage
       x += (targetX - x) * 0.12;
       y += (targetY - y) * 0.12;
 
@@ -108,10 +80,9 @@ export function Robot({ className = '' }: RobotProps) {
         `rotate(${(x * TILT).toFixed(2)} 120 168)`,
       );
 
-      // Clignement : le volet descend sur la visiere puis remonte.
       if (now > blinkAt) {
         blinkUntil = now + 120;
-        blinkAt = now + 2600 + Math.random() * 4200; // rythme irregulier
+        blinkAt = now + 2600 + Math.random() * 4200; // rythme irrégulier
       }
       const closed = now < blinkUntil;
       shutter.setAttribute('y', closed ? '72' : '10');
@@ -123,8 +94,7 @@ export function Robot({ className = '' }: RobotProps) {
     window.addEventListener('pointerdown', onPointerDown, { passive: true });
     frame = requestAnimationFrame(tick);
 
-    // Nettoyage obligatoire : sans cela la boucle continue de tourner
-    // apres le demontage et les ecouteurs restent attaches a window.
+    // Sans cela la boucle continue après le démontage.
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener('pointermove', onPointerMove);
@@ -141,13 +111,11 @@ export function Robot({ className = '' }: RobotProps) {
       aria-label="Illustration d'une tête de robot dont le regard suit le curseur"
     >
       <defs>
-        {/* Le volet de clignement ne doit jamais deborder de la visiere. */}
         <clipPath id="visor-clip">
           <rect x="64" y="76" width="112" height="50" rx="8" />
         </clipPath>
       </defs>
 
-      {/* Antenne + LED d'etat (vert = en ligne) */}
       <line
         x1="120"
         y1="48"
@@ -161,7 +129,6 @@ export function Robot({ className = '' }: RobotProps) {
       <circle cx="120" cy="20" r="10" fill="none" stroke="var(--color-live)" strokeOpacity="0.25" />
 
       <g ref={headRef}>
-        {/* Chassis */}
         <rect
           x="42"
           y="48"
@@ -172,7 +139,6 @@ export function Robot({ className = '' }: RobotProps) {
           stroke="var(--color-edge-hi)"
           strokeWidth="2"
         />
-        {/* Liseré interne : donne l'epaisseur de tolerie */}
         <rect
           x="52"
           y="58"
@@ -183,7 +149,6 @@ export function Robot({ className = '' }: RobotProps) {
           stroke="var(--color-edge)"
           strokeWidth="1"
         />
-        {/* Vis de fixation */}
         {[
           [60, 66],
           [180, 66],
@@ -193,16 +158,14 @@ export function Robot({ className = '' }: RobotProps) {
           <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="2.5" fill="var(--color-edge-hi)" />
         ))}
 
-        {/* Visiere */}
         <rect x="64" y="76" width="112" height="50" rx="8" fill="#0d0c0b" />
 
         <g clipPath="url(#visor-clip)">
-          {/* Les deux yeux, deplaces ensemble par la boucle rAF */}
           <g ref={eyesRef}>
             <rect x="86" y="92" width="18" height="18" rx="5" fill="var(--color-signal)" />
             <rect x="136" y="92" width="18" height="18" rx="5" fill="var(--color-signal)" />
           </g>
-          {/* Volet de clignement : en y=10 il est hors visiere, en y=72 il la couvre */}
+          {/* Volet : y=10 hors visière, y=72 la couvre. */}
           <rect
             ref={shutterRef}
             x="64"
@@ -212,7 +175,6 @@ export function Robot({ className = '' }: RobotProps) {
             fill="var(--color-panel)"
           />
         </g>
-        {/* Cadre de visiere par-dessus le volet */}
         <rect
           x="64"
           y="76"
@@ -224,7 +186,6 @@ export function Robot({ className = '' }: RobotProps) {
           strokeWidth="1"
         />
 
-        {/* Bandeau de sortie : lit une trame de donnees */}
         {[
           [82, 14],
           [100, 8],
@@ -244,7 +205,6 @@ export function Robot({ className = '' }: RobotProps) {
         ))}
       </g>
 
-      {/* Platine de montage */}
       <rect x="94" y="188" width="52" height="10" rx="3" fill="var(--color-edge)" />
       <rect x="76" y="200" width="88" height="6" rx="3" fill="var(--color-inset)" />
     </svg>

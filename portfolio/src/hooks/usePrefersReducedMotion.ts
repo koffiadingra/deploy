@@ -2,17 +2,9 @@ import { useEffect, useState } from 'react';
 
 const QUERY = '(prefers-reduced-motion: reduce)';
 
-/**
- * Indique si le visiteur a demande a reduire les animations dans les
- * reglages de son systeme d'exploitation.
- *
- * Le CSS gere deja le cas via @media, mais les animations pilotees en
- * JavaScript (le robot) ne sont pas couvertes par le CSS : il faut donc
- * lire la preference cote script pour pouvoir couper la boucle
- * d'animation, et pas seulement la masquer.
- *
- * Doc : https://developer.mozilla.org/fr/docs/Web/API/Window/matchMedia
- */
+// Le CSS couvre déjà ses propres animations via @media, mais pas celles
+// pilotées en JavaScript : lire la préférence ici permet de couper la boucle du
+// robot au lieu de seulement la masquer.
 export function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState(
     () => typeof window !== 'undefined' && window.matchMedia(QUERY).matches,

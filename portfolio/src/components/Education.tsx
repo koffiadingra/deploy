@@ -1,17 +1,17 @@
 import { useI18n } from '../i18n/LanguageProvider';
-import { education } from '../data/career';
+import { useContent } from '../content/ContentProvider';
 import { SectionHeader } from './Ui';
 
 export function Education() {
   const { t, pick } = useI18n();
+  const { education } = useContent();
 
   return (
     <section id="education" className="border-t border-edge py-24">
       <div className="mx-auto max-w-6xl px-5">
         <SectionHeader index="06" eyebrow={t('edu.eyebrow')} title={t('edu.title')} />
 
-        {/* Ligne verticale continue : la formation est une sequence
-            chronologique, le trait porte donc une information reelle. */}
+        {/* Le trait encode la chronologie, il n'est pas décoratif. */}
         <ol className="relative border-l border-edge pl-8">
           {education.map((item) => (
             <li key={item.id} className="relative pb-10 last:pb-0">

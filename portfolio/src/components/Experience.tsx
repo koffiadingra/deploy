@@ -1,9 +1,10 @@
 import { useI18n } from '../i18n/LanguageProvider';
-import { experiences } from '../data/career';
+import { useContent } from '../content/ContentProvider';
 import { Brackets, SectionHeader, Tag } from './Ui';
 
 export function Experience() {
   const { t, pick } = useI18n();
+  const { experiences } = useContent();
 
   return (
     <section id="experience" className="border-t border-edge py-24">
@@ -42,8 +43,6 @@ export function Experience() {
               <ul className="mt-6 space-y-2.5">
                 {pick(exp.tasks).map((task) => (
                   <li key={task} className="flex gap-3 text-sm leading-relaxed text-muted">
-                    {/* Le tiret sert de puce : plus sobre qu'une icone, et
-                        aria-hidden pour ne pas etre lu par un lecteur d'ecran */}
                     <span className="mt-2 h-px w-3 shrink-0 bg-edge-hi" aria-hidden="true" />
                     <span>{task}</span>
                   </li>

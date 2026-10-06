@@ -1,4 +1,6 @@
+import { Suspense, lazy } from 'react';
 import { LanguageProvider } from './i18n/LanguageProvider';
+import { ContentProvider } from './content/ContentProvider';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
@@ -9,39 +11,60 @@ import { Education } from './components/Education';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 
-/**
- * Racine de l'application.
- *
- * <LanguageProvider> enveloppe tout : chaque section appelle useI18n()
- * et se re-rend automatiquement au changement de langue. Aucun texte
- * n'est ecrit en dur dans les composants.
- */
+// `lazy` place l'admin dans un fichier séparé, téléchargé seulement si l'on
+// ouvre /admin : un visiteur ordinaire n'en reçoit rien.
+const AdminApp = lazy(() => import('./admin/AdminApp'));
+
+// Deux pages seulement : lire le chemin une fois suffit, sans bibliothèque de
+// routage. On passe de l'une à l'autre par un lien ordinaire, donc par un
+// chargement complet — l'admin repart d'un état propre.
+// vercel.json renvoie /admin vers index.html, sans quoi un accès direct
+// donnerait une 404 du serveur statique.
+function isAdminRoute(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.pathname.replace(/\/+$/, '') === '/admin';
+}
+
 export default function App() {
+  if (isAdminRoute()) {
+    return (
+      <Suspense
+        fallback={
+          <div className="grid min-h-screen place-items-center">
+            <p className="label">Chargement de l’administration…</p>
+          </div>
+        }
+      >
+        <AdminApp />
+      </Suspense>
+    );
+  }
+
   return (
     <LanguageProvider>
-      {/* Lien d'evitement : premiere cible du clavier, permet de sauter
-          la navigation. Invisible tant qu'il n'a pas le focus.
-          Doc : https://www.w3.org/WAI/WCAG22/Techniques/general/G1 */}
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-signal focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:text-ink"
-      >
-        Aller au contenu
-      </a>
+      <ContentProvider>
+        {/* Lien d'évitement : première cible du clavier, invisible sans focus. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-signal focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:text-ink"
+        >
+          Aller au contenu
+        </a>
 
-      <Nav />
+        <Nav />
 
-      <main id="main">
-        <Hero />
-        <About />
-        <Experience />
-        <Projects />
-        <Skills />
-        <Education />
-        <Contact />
-      </main>
+        <main id="main">
+          <Hero />
+          <About />
+          <Experience />
+          <Projects />
+          <Skills />
+          <Education />
+          <Contact />
+        </main>
 
-      <Footer />
+        <Footer />
+      </ContentProvider>
     </LanguageProvider>
   );
 }

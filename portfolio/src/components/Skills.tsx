@@ -8,7 +8,8 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { useI18n } from '../i18n/LanguageProvider';
-import { skillGroups, type SkillLevel } from '../data/skills';
+import { useContent } from '../content/ContentProvider';
+import type { SkillLevel } from '../content/types';
 import { Brackets, SectionHeader } from './Ui';
 
 /** Table de correspondance nom -> composant d'icone.
@@ -30,6 +31,7 @@ const LEVEL_STYLE: Record<SkillLevel, string> = {
 
 export function Skills() {
   const { t, pick } = useI18n();
+  const { skillGroups } = useContent();
 
   return (
     <section id="skills" className="border-t border-edge py-24">
@@ -67,7 +69,7 @@ export function Skills() {
                 <ul className="mt-5 flex flex-wrap gap-1.5">
                   {group.skills.map((skill) => (
                     <li
-                      key={skill.name}
+                      key={skill.id}
                       className={`border bg-inset px-2 py-1 font-mono text-[11px] ${
                         LEVEL_STYLE[skill.level]
                       }`}

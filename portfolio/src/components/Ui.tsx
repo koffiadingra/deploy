@@ -1,13 +1,7 @@
 import type { ReactNode } from 'react';
 
-/**
- * Primitives visuelles partagees.
- * Les regrouper ici evite de repeter les memes chaines de classes
- * dans six sections differentes, et garantit qu'un changement de style
- * se fait a un seul endroit.
- */
+// Primitives visuelles partagées : un changement de style se fait ici seul.
 
-/** Numero + intitule de section, suivis d'une bande de prudence. */
 export function SectionHeader({
   index,
   eyebrow,
@@ -36,7 +30,6 @@ export function SectionHeader({
   );
 }
 
-/** Etiquette de technologie. Pas un bouton : c'est une donnee. */
 export function Tag({ children }: { children: ReactNode }) {
   return (
     <span className="border border-edge bg-inset px-2 py-1 font-mono text-[11px] tracking-wide text-muted">
@@ -45,7 +38,6 @@ export function Tag({ children }: { children: ReactNode }) {
   );
 }
 
-/** Equerres de reperage affichees au survol d'une carte. */
 export function Brackets() {
   return (
     <>

@@ -4,9 +4,9 @@ import { useI18n } from '../i18n/LanguageProvider';
 import { useActiveSection } from '../hooks/useActiveSection';
 import { LanguageSwitch } from './LanguageSwitch';
 import type { UiKey } from '../i18n/ui';
-import { profile } from '../data/profile';
+import { useContent } from '../content/ContentProvider';
 
-/** Ordre des sections. Une seule liste sert au menu ET au rail d'axe. */
+// Une seule liste pour le menu et le rail d'axe.
 export const SECTIONS: { id: string; key: UiKey }[] = [
   { id: 'home', key: 'nav.home' },
   { id: 'about', key: 'nav.about' },
@@ -19,6 +19,7 @@ export const SECTIONS: { id: string; key: UiKey }[] = [
 
 export function Nav() {
   const { t } = useI18n();
+  const { profile } = useContent();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -32,7 +33,6 @@ export function Nav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Fermer le menu mobile a la touche Echap : attendu de tout overlay.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
@@ -91,7 +91,6 @@ export function Nav() {
           </div>
         </div>
 
-        {/* Menu mobile */}
         <nav
           id="mobile-nav"
           hidden={!open}
@@ -116,9 +115,7 @@ export function Nav() {
         </nav>
       </header>
 
-      {/* Rail d'axe : indicateur de position, visible sur grand ecran.
-          Il encode une information reelle (ou l'on se trouve dans la page)
-          plutot qu'une decoration. */}
+      {/* Rail d'axe : position dans la page, sur grand écran. */}
       <div
         aria-hidden="true"
         className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 xl:flex"

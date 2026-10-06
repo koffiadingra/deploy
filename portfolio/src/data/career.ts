@@ -1,4 +1,4 @@
-import type { Localized } from '../i18n/config';
+import type { Localized } from '../i18n/languages';
 
 export interface Experience {
   id: string;
@@ -11,11 +11,8 @@ export interface Experience {
   stack: string[];
 }
 
-/**
- * Experience professionnelle.
- * SOURCE : rubrique "Experiences professionnelles" du CV (page 1).
- * Aucune mission n'a ete ajoutee ou reformulee au-dela de la traduction.
- */
+// Source : rubrique « Expériences professionnelles » du CV, page 1. Aucune
+// mission ajoutée ni reformulée au-delà de la traduction.
 export const experiences: Experience[] = [
   {
     id: 'xsel-2026',
@@ -78,14 +75,7 @@ export interface Education {
   detail?: Localized;
 }
 
-/**
- * Formations.
- * SOURCE : rubrique "Diplomes et Formations" du CV (page 1).
- *
- * NOTE : le CV mentionne un projet nomme "for prode" porte par la GIZ.
- * L'intitule exact du programme n'a pas pu etre verifie, il est donc
- * repris tel quel dans le CV sans reformulation.
- */
+// Source : rubrique « Diplômes et Formations » du CV, page 1.
 export const education: Education[] = [
   {
     id: 'wecode-2025',

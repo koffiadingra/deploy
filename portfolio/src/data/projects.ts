@@ -1,35 +1,23 @@
-import type { Localized } from '../i18n/config';
+import type { Localized } from '../i18n/languages';
 
 export interface Project {
   id: string;
-  /** `true` = mis en avant en haut de la section Projets. */
+  /** Mis en avant en haut de la section. */
   featured: boolean;
   title: Localized;
   role: Localized;
   summary: Localized;
-  /** Uniquement pour les projets en vedette : le detail technique. */
   highlights?: Localized<string[]>;
   stack: string[];
-  /** Laisser vide tant que le depot public n’existe pas. */
   repo?: string;
   demo?: string;
 }
 
-/**
- * SOURCES :
- *  - Projets 1 et 2 (featured) : rubrique "Projets" du CV, page 1.
- *    Les puces sont reprises du CV, sans ajout technique invente.
- *  - Projets suivants : contenu de l’ancien portfolio
- *    (src/components/Projects.tsx de l’archive deploy-main.zip).
- *
- * A COMPLETER : aucun lien de depot ni de demo n’etait fourni.
- * Renseigner `repo` / `demo` quand ils existent ; les boutons
- * apparaissent automatiquement une fois le champ rempli.
- */
+// Sources : les projets en vedette viennent de la rubrique « Projets » du CV,
+// les suivants de l'ancien portfolio.
+// Aucun lien n'a été fourni : renseigner `repo` / `demo` fait apparaître les
+// boutons correspondants.
 export const projects: Project[] = [
-  // ---------------------------------------------------------------
-  // 1. Projet en vedette — CV
-  // ---------------------------------------------------------------
   {
     id: 'facturation',
     featured: true,
@@ -70,9 +58,6 @@ export const projects: Project[] = [
     ],
   },
 
-  // ---------------------------------------------------------------
-  // 2. Projet en vedette — CV
-  // ---------------------------------------------------------------
   {
     id: 'geclean',
     featured: true,
@@ -119,9 +104,6 @@ export const projects: Project[] = [
     ],
   },
 
-  // ---------------------------------------------------------------
-  // Projets anterieurs — repris de l'ancien portfolio
-  // ---------------------------------------------------------------
   {
     id: 'my-show-time',
     featured: false,

@@ -1,19 +1,9 @@
 import { useEffect, useState } from 'react';
 
-/**
- * Renvoie l'identifiant de la section actuellement visible.
- *
- * Principe : IntersectionObserver plutot qu'un ecouteur `scroll`.
- * Le navigateur fait le calcul lui-meme, hors du thread principal ;
- * on evite de recalculer des positions a chaque pixel de defilement.
- *
- * `rootMargin: '-45% 0px -50% 0px'` reduit la zone d'observation a une
- * bande horizontale au milieu de l'ecran : la section active est celle
- * qui traverse le centre du viewport, ce qui correspond a ce que le
- * visiteur lit reellement.
- *
- * Doc : https://developer.mozilla.org/fr/docs/Web/API/Intersection_Observer_API
- */
+// IntersectionObserver plutôt qu'un écouteur `scroll` : le navigateur fait le
+// calcul hors du thread principal.
+// Le rootMargin réduit la zone d'observation à une bande au milieu de l'écran,
+// pour que la section active soit celle que le visiteur lit réellement.
 export function useActiveSection(ids: string[]): string {
   const [active, setActive] = useState(ids[0] ?? '');
 
@@ -33,8 +23,7 @@ export function useActiveSection(ids: string[]): string {
 
     elements.forEach((el) => observer.observe(el));
 
-    // Nettoyage : sans cela, l'observer survivrait au demontage
-    // du composant et retiendrait les noeuds DOM en memoire.
+    // Sans cela, l'observer retiendrait les nœuds DOM après le démontage.
     return () => observer.disconnect();
   }, [ids]);
 

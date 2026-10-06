@@ -10,8 +10,14 @@ npm install
 npm run dev        # http://localhost:3000
 npm run build      # vérifie les types puis compile dans dist/
 npm run typecheck  # types uniquement
-npm run preview    # sert le contenu de build/
+npm run preview    # sert le contenu de dist/
+
+npm run dev:local  # site + API en local, PostgreSQL en mémoire (sans compte Neon)
+npm run test:db    # tests du schéma et des requêtes SQL
 ```
+
+> L'espace d'administration (`/admin`) et sa base de données sont décrits
+> aux sections **10 à 12**.
 
 ---
 
@@ -276,7 +282,206 @@ statiquement.
 
 ---
 
-## Arborescence
+---
+
+## 10. Espace d'administration
+
+Depuis `/admin`, tout le contenu du site s'édite sans toucher au code :
+profil, textes de présentation, photo, CV, expériences, formations, projets,
+compétences, langues, savoir-être et centres d'intérêt.
+
+### Architecture en une phrase
+
+Le site reste une application monopage servie en statique ; les écritures
+passent par cinq fonctions serverless dans `api/`, qui parlent à une base
+PostgreSQL hébergée chez Neon.
+
+```
+Navigateur ──► /api/content        (lecture publique, mise en cache 60 s)
+           ──► /api/auth/*         (connexion, déconnexion, session)
+           ──► /api/admin/*        (écritures — exige une session)
+           ──► /api/media/:id      (photo et CV stockés en base)
+           ──► /api/setup          (installation, protégée par jeton)
+                      │
+                      ▼
+                  Neon PostgreSQL
+```
+
+### Variables d'environnement
+
+Les noms sont définis, les valeurs vous appartiennent. Le fichier
+`.env.example` les liste avec la façon de les générer. Sur Vercel :
+**Settings > Environment Variables**.
+
+| Variable | Rôle | Comment l'obtenir |
+|---|---|---|
+| `DATABASE_URL` | Connexion Neon | Neon Console > Connection string > **Pooled connection** (doit contenir `?sslmode=require`) |
+| `AUTH_SECRET` | Signature des sessions | `openssl rand -base64 48` — 32 caractères minimum |
+| `ADMIN_EMAIL` | Identifiant du compte | votre adresse |
+| `ADMIN_PASSWORD` | Mot de passe initial | 12 caractères minimum ; lu une seule fois, à l'installation |
+| `SETUP_TOKEN` | Protège `/api/setup` | `openssl rand -hex 32` |
+
+Aucune valeur ne doit être commitée : `.env` et `.env.local` sont ignorés par
+Git.
+
+### Mise en service
+
+1. Créer un projet sur **neon.tech**, copier la chaîne de connexion *poolée*.
+2. Renseigner les cinq variables sur Vercel, puis redéployer.
+3. Lancer l'installation une fois :
+
+```bash
+curl -X POST https://votre-site.vercel.app/api/setup \
+     -H "x-setup-token: VOTRE_SETUP_TOKEN"
+```
+
+Cette requête crée les 9 tables, le compte administrateur, et insère le
+contenu du CV. Elle est **idempotente** : la relancer ne duplique rien et
+n'écrase aucune modification.
+
+4. Ouvrir `/admin` et se connecter.
+
+> Une fois l'installation faite, vous pouvez supprimer `SETUP_TOKEN` de
+> Vercel : la route se désactive d'elle-même en son absence.
+
+### Travailler en local, sans compte Neon
+
+```bash
+npm run build
+npm run dev:local        # http://localhost:4300
+```
+
+`scripts/dev-server.mjs` sert le site construit et exécute **les vraies
+fonctions** de `api/` au-dessus d'un PostgreSQL en mémoire (PGlite). Base
+recréée et contenu réinstallé à chaque démarrage, effacés à l'arrêt.
+Identifiants affichés dans la console.
+
+### Tester la couche base de données
+
+```bash
+npm run test:db
+```
+
+Exécute le schéma et le code de `api/_lib/` contre un vrai PostgreSQL.
+Vérifie notamment : contraintes `CHECK`, clés étrangères, `ON DELETE CASCADE`
+et `SET NULL`, aller-retour des tableaux `text[]`, aller-retour binaire exact
+d'un fichier, réordonnancement, hachage et vérification des mots de passe.
+
+---
+
+## 11. Décisions de conception de l'administration
+
+### Le repli d'abord, la base ensuite
+
+Le site affiche d'emblée `src/content/fallback.ts`, le contenu du CV compilé
+dans le bundle, puis appelle `/api/content` en arrière-plan et ne remplace le
+contenu que si l'appel aboutit.
+
+Conséquence : **base injoignable, mal configurée ou vide, le visiteur voit
+quand même le site complet.** Pas d'écran de chargement, pas de saut de mise
+en page, pas de page blanche si Neon est en panne. Le seul effet visible est
+pour vous : après une modification, le contenu d'origine s'affiche une
+fraction de seconde avant d'être remplacé.
+
+Le même fichier sert de semence à `/api/setup` : base et repli partent donc
+du même contenu, sans divergence possible.
+
+### Sécurité — ce qui protège réellement
+
+L'écran de connexion de `/admin` ne protège rien : tout ce code est
+téléchargé par le navigateur. **La seule protection effective est côté
+serveur**, dans `api/admin/[...path].ts`, où la session est vérifiée une
+seule fois avant tout aiguillage — impossible d'oublier une route.
+
+| Mesure | Mise en œuvre |
+|---|---|
+| Mots de passe | scrypt (`node:crypto`), sel aléatoire par compte, comparaison en temps constant |
+| Session | JWT signé HMAC-SHA256 (`jose`), cookie `HttpOnly` + `Secure` + `SameSite=Strict`, 8 heures |
+| Injection SQL | Requêtes en gabarits étiquetés : toute valeur devient un paramètre lié, jamais du texte concaténé |
+| Noms de tables | Jamais interpolés : table de correspondance vers des requêtes écrites en dur |
+| URL saisies | `javascript:` et consorts rejetés — une telle URL dans un lien exécuterait du script chez chaque visiteur |
+| Fichiers | Type MIME sur liste blanche à l'envoi **et** au service, 3 Mo maximum |
+| Énumération de comptes | « compte inconnu » et « mot de passe faux » renvoient le même message |
+| Fuite d'information | Les erreurs SQL partent dans les journaux Vercel, jamais dans la réponse |
+
+### Pourquoi les fichiers sont stockés dans Neon
+
+Le portfolio compte trois fichiers : une photo et deux CV, environ 2 Mo au
+total, loin des 0,5 Go du palier gratuit Neon. Ajouter un service de stockage
+objet aurait voulu dire une variable d'environnement de plus, un compte de
+plus, une panne possible de plus — pour trois fichiers.
+
+Pour basculer plus tard vers Vercel Blob, S3 ou Cloudinary, il suffit de
+réécrire `api/media/[id].ts` : le reste du code manipule une URL, sans savoir
+d'où elle vient.
+
+### Pourquoi cinq fonctions et non vingt
+
+Le palier gratuit de Vercel plafonne le nombre de fonctions serverless par
+déploiement. Les segments dynamiques `[action]` et attrape-tout `[...path]`
+regroupent toutes les routes dans cinq fichiers, sans rien changer aux URL,
+qui restent celles d'une API REST classique.
+
+### Le pilote HTTP de Neon
+
+`@neondatabase/serverless` envoie chaque requête en HTTPS, sans connexion
+persistante. C'est ce qu'il faut en serverless, où chaque invocation peut
+démarrer un conteneur neuf : un pilote classique ouvrirait une connexion par
+invocation et épuiserait le quota.
+
+Deux conséquences traitées dans le code :
+- **une seule instruction SQL par requête** — d'où `SCHEMA_STATEMENTS` sous
+  forme de tableau plutôt qu'un script séparé par des « ; » ;
+- **`BIGSERIAL` revient en chaîne** (un entier 64 bits dépasse la précision
+  d'un `number` JavaScript) — d'où `toId()` appliqué à chaque identifiant lu,
+  sans quoi `"12" === 12` serait faux et casserait toute comparaison.
+
+### Où ajouter un champ
+
+Un nouveau champ se propage en quatre endroits, et TypeScript signale ceux
+que vous oubliez :
+
+1. `api/_lib/schema.ts` — la colonne ;
+2. `src/content/types.ts` — le contrat partagé ;
+3. `api/_lib/repository.ts` — lecture et écriture ;
+4. `src/admin/sections/` — le champ de formulaire.
+
+---
+
+## 12. Arborescence de l'administration
+
+```
+api/
+├── _lib/
+│   ├── db.ts            connexion Neon (+ injection pour les tests)
+│   ├── schema.ts        DDL, une instruction par entrée
+│   ├── auth.ts          scrypt, JWT, cookie de session
+│   ├── http.ts          réponses JSON, validation des entrées
+│   └── repository.ts    toutes les requêtes SQL du projet
+├── setup.ts             installation idempotente
+├── content.ts           GET contenu public
+├── auth/[action].ts     login | logout | me
+├── admin/[...path].ts   CRUD, session exigée
+└── media/[id].ts        photo et CV
+
+src/
+├── content/
+│   ├── types.ts             contrat partagé API / site / admin
+│   ├── fallback.ts          contenu du CV : repli ET semence
+│   └── ContentProvider.tsx  repli d'abord, base ensuite
+└── admin/
+    ├── AdminApp.tsx         connexion + panneau (chargé à la demande)
+    ├── api.ts               client HTTP
+    ├── fields.tsx           champs réutilisables
+    ├── ResourceSection.tsx  liste éditable générique
+    └── sections/            profil, et les sections en liste
+
+scripts/
+├── dev-server.mjs       site + API en local, PostgreSQL en mémoire
+└── test-database.mjs    tests du schéma et des requêtes
+```
+
+## Arborescence du site public
 
 ```
 src/

@@ -23,3 +23,8 @@ build
 *.njsproj
 *.sln
 *.sw?
+
+# Variables locales (ne jamais commiter)
+.env
+.env.local
+.vercel

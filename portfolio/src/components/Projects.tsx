@@ -8,8 +8,7 @@ export function Projects() {
   const { t, pick } = useI18n();
   const [showOthers, setShowOthers] = useState(false);
 
-  // useMemo : le filtrage ne depend d'aucun etat, inutile de le refaire
-  // a chaque rendu declenche par le bouton ou par le changement de langue.
+  // Le filtrage ne dépend d'aucun état : inutile de le refaire à chaque rendu.
   const { featured, others } = useMemo(
     () => ({
       featured: projects.filter((p) => p.featured),
@@ -101,8 +100,7 @@ export function Projects() {
           ))}
         </div>
 
-        {/* Projets anterieurs : replies par defaut pour que les deux
-            realisations recentes gardent le premier plan. */}
+        {/* Repliés par défaut : les projets récents gardent le premier plan. */}
         <button
           type="button"
           onClick={() => setShowOthers((v) => !v)}
