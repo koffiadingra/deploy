@@ -6,15 +6,15 @@
 // Les données brutes et leurs sources restent dans src/data/ ; ce fichier ne
 // fait que les assembler dans la forme attendue par l'API.
 
-import { experiences as staticExperiences, education as staticEducation } from '../data/career';
-import { projects as staticProjects } from '../data/projects';
-import { skillGroups as staticSkillGroups } from '../data/skills';
+import { experiences as staticExperiences, education as staticEducation } from '../data/career.js';
+import { projects as staticProjects } from '../data/projects.js';
+import { skillGroups as staticSkillGroups } from '../data/skills.js';
 import {
   profile as staticProfile,
   softSkills as staticSoftSkills,
   spokenLanguages as staticLanguages,
   interests as staticInterests,
-} from '../data/profile';
+} from '../data/profile.js';
 import type {
   ContentBundle,
   EducationItem,

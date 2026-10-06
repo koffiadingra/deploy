@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { readMedia } from '../_lib/repository';
-import { fail, handleError, rejectMethod } from '../_lib/http';
+import { readMedia } from '../_lib/repository.js';
+import { fail, handleError, rejectMethod } from '../_lib/http.js';
 
 // GET /api/media/:id — sert un fichier stocké en base (portrait, CV).
 // Cache d'un an possible car un identifiant ne désigne jamais deux contenus :

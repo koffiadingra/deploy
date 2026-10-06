@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getSql } from './_lib/db';
-import { SCHEMA_STATEMENTS } from './_lib/schema';
-import { adminExists, hashPassword } from './_lib/auth';
-import { fail, handleError, json, rejectMethod } from './_lib/http';
-import { fallbackContent } from '../src/content/fallback';
+import { getSql } from './_lib/db.js';
+import { SCHEMA_STATEMENTS } from './_lib/schema.js';
+import { adminExists, hashPassword } from './_lib/auth.js';
+import { fail, handleError, json, rejectMethod } from './_lib/http.js';
+import { fallbackContent } from '../src/content/fallback.js';
 
 // Crée les tables, le compte administrateur et sème le contenu du CV. Chaque
 // étape vérifie ce qui existe déjà : relancer la route ne duplique rien.

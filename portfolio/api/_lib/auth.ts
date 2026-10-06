@@ -1,7 +1,7 @@
 import { randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 import { SignJWT, jwtVerify } from 'jose';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getSql } from './db';
+import { getSql } from './db.js';
 
 // Mots de passe hachés avec scrypt (sel aléatoire par compte), sessions
 // portées par un JWT signé dans un cookie HttpOnly + Secure + SameSite=Strict.

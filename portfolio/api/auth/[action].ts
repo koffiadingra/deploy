@@ -1,13 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getSql } from '../_lib/db';
+import { getSql } from '../_lib/db.js';
 import {
   clearSessionCookie,
   createSessionToken,
   readSession,
   setSessionCookie,
   verifyPassword,
-} from '../_lib/auth';
-import { asText, fail, handleError, json, readJsonBody } from '../_lib/http';
+} from '../_lib/auth.js';
+import { asText, fail, handleError, json, readJsonBody } from '../_lib/http.js';
 
 // /api/auth/login | logout | me — regroupées via le segment dynamique
 // [action], le palier gratuit de Vercel plafonnant le nombre de fonctions.

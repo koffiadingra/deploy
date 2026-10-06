@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { isDatabaseConfigured } from './_lib/db';
-import { readContentBundle } from './_lib/repository';
-import { handleError, json, rejectMethod } from './_lib/http';
+import { isDatabaseConfigured } from './_lib/db.js';
+import { readContentBundle } from './_lib/repository.js';
+import { handleError, json, rejectMethod } from './_lib/http.js';
 
 // GET /api/content — contenu public, sans authentification.
 // Mise en cache CDN 60 s, puis ancienne réponse servie pendant le

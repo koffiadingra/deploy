@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { DatabaseNotConfiguredError } from './db';
+import { DatabaseNotConfiguredError } from './db.js';
 
 export function json(
   res: VercelResponse,

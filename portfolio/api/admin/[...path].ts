@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { readSession } from '../_lib/auth';
+import { readSession } from '../_lib/auth.js';
 import {
   asBoolean,
   asEnum,
@@ -13,7 +13,7 @@ import {
   handleError,
   json,
   readJsonBody,
-} from '../_lib/http';
+} from '../_lib/http.js';
 import {
   createEducation,
   createExperience,
@@ -36,8 +36,8 @@ import {
   updateSkillGroup,
   type MediaSlot,
   type TableKey,
-} from '../_lib/repository';
-import { LIST_KINDS, SKILL_ICONS } from '../../src/content/types';
+} from '../_lib/repository.js';
+import { LIST_KINDS, SKILL_ICONS } from '../../src/content/types.js';
 
 // Toutes les écritures du site :
 //   GET    /api/admin/content           contenu complet, sans cache
