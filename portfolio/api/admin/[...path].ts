@@ -60,9 +60,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return fail(res, 401, 'NOT_AUTHENTICATED', 'Session absente ou expirée.');
     }
 
-    // [...path] arrive en tableau, mais en chaîne si l'URL n'a qu'un segment.
-    const raw = req.query.path;
-    const segments = Array.isArray(raw) ? raw : raw ? [String(raw)] : [];
+    // req.query.path (peuplé par Vercel depuis le nom de fichier [...path].ts)
+    // s'est révélé vide en production pour des requêtes qui contenaient
+    // pourtant bien un sous-chemin. req.url, lui, est toujours fiable : les
+    // segments en sont donc extraits directement plutôt que de dépendre du
+    // routage dynamique de la plateforme.
+    const pathname = (req.url ?? '').split('?')[0];
+    const afterPrefix = pathname.replace(/^\/api\/admin\/?/, '');
+    const segments = afterPrefix ? afterPrefix.split('/').filter(Boolean).map(decodeURIComponent) : [];
     const [first, second] = segments;
     const method = req.method ?? 'GET';
 
